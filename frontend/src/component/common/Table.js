@@ -1,4 +1,4 @@
-// @flow
+
 import React,{ forwardRef }  from "react";
 import MaterialTable, {MTableHeader} from 'material-table'
 import AddBox from '@material-ui/icons/AddBox';
@@ -60,15 +60,7 @@ const customStyles = {
 }
 
 
-type Props={
-    TableQuery:Map<{ [string]: string }>,
-    SetTableQuery:(state:Map)=>Function,
-    columns:{ [string]: string },
-    SearchOptions: Array< { [string]: string }>,
-    GetSearchData:()=>Function,
-
-}
-export const PigletTable = (props:Props)=>{
+export const PigletTable = (props)=>{
 
 
     function changeRowPerPage(event){

@@ -7,16 +7,12 @@ import Progress from '../../component/common/Progress'
 import Notibox from '../../component/common/Notibox'
 
 
-const HeaderPage = ({Loading,NotiOpt,SetNotiboxOpt,OnChangeProject,OnSignIn,OnSignOut,SelectProject,UserInfo})=>{
+const HeaderPage = ({Loading,NotiOpt,SetNotiboxOpt})=>{
 
     return(
         <React.Fragment>
             {Loading && <Progress/>}
-            <Header OnChangeProject={OnChangeProject}
-                    OnSignIn={OnSignIn}
-                    SelectProject={SelectProject}
-                    OnSignOut={OnSignOut}
-                    UserInfo={UserInfo}/>
+            <Header/>
 
             <Notibox Variant={NotiOpt.get('variant')}
                      Message={NotiOpt.get('message')}

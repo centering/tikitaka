@@ -1,0 +1,17 @@
+*/**/node_modules/*
+.idea/*
+*/build/*
+*/**/package-lock.json
+*/.DS_Store
+*/*.log
+backend/nohup.out
+
+*/*.log.*
+backend/**/__pycache__/*
+*.pyc
+*DS_Store*
+*.vscode*
+frontend/public/*.js
+frontend/public/assets.json
+frontend/public/*.html
+.env
