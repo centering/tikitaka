@@ -1,4 +1,4 @@
-Flask==0.12.4
+Flask==1.0
 Flask-Cors==3.0.7
 flask-restplus==0.12.1
 flask-swagger==0.2.13
