@@ -6,4 +6,4 @@ Project for data driven open domain dialog model serving web application
 
     2. Respond proper response after classifying specific user intention or action
 
-For supporting these functions, Tikitaka provides easy data regist & modifying, incremental model learning & deploy
+For supporting these functions, Tikitaka provides easy data register & modifying, incremental model learning & deploy
