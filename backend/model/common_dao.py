@@ -100,37 +100,3 @@ def _delete_item_using_id(table_name, row_id):
     sql += """ WHERE id = {}""".format(row_id)
 
     sql_execute(sql)
-
-def user_activate_check(email):
-    sql = """
-    SELECT id FROM USER WHERE email = '{}' AND activate = 'true'
-    """.format(email)
-
-    rows = sql_execute(sql)
-
-    if len(rows) > 0:
-        return True
-
-    return False
-
-def get_user_id_by_email(email):
-    sql = ("SELECT id FROM USER WHERE email = '{}'".format(email))
-    rows = sql_execute(sql)
-
-    if len(rows) < 1:
-        raise ValueError('check user email whether it exist')
-
-    return rows[0]['id']
-
-def get_role_id_by_name(role_name):
-    sql = ("SELECT id FROM ROLE WHERE name = '{}'".format(role_name))
-    rows = sql_execute(sql)
-
-    if len(rows) < 1:
-        raise ValueError('check role_name whether it exist')
-
-    return rows[0]['id']
-
-
-
-

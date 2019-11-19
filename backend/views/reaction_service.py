@@ -2,14 +2,13 @@ from flask_restplus import Resource,fields
 from flask import request
 from flask_jwt_extended import jwt_required
 
-from views.api import api, project_ns
+from views.api import api, reaction_ns, reaction_group_ns
 
-from model import ProjectDao, UserDao, UserGroupDao
+from model import ReactionDao, ReactionGroupDao
 
-project_create_proto = project_ns.model("project_create_proto", {
-    "project_name": fields.String("project name"),
-    "project_desc": fields.String("proejct description"),
-    'email':fields.String("user email"),
+reaction_create_proto = reaction_ns.model("reaction_create_proto", {
+    "reaction_name": fields.Integer("project name"),
+    "reaction_name": fields.String("project name")
 })
 
 project_update_proto = project_ns.model("project_update_proto", {
@@ -27,7 +26,7 @@ project_delete_parser.add_argument('id', location='args')
 
 @project_ns.route('/')
 @api.doc(responses={404: 'error'})
-class ProjectService(Resource):
+class ReactionService(Resource):
     @api.expect(project_create_proto)
     def post(self):         #C
         args = request.json
