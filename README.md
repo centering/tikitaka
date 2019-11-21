@@ -10,4 +10,7 @@ For supporting these functions, Tikitaka provides easy data register & modifying
 
 ## Model work flow
 ![](img/Modelflow.png )
+
+## Database ERD
+![](img/tikitaka_erd.png )
 ---
