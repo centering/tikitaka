@@ -25,6 +25,7 @@
         "react-router-dom": "^5.0.0",
         "react-select": "^3.0.4",
         "react-sidebar": "^3.0.2",
+        "react-sortable-tree": "^2.7.1",
         "redux": "^4.0.1",
         "redux-actions": "^2.6.5",
         "redux-pender": "^2.0.12"

@@ -19,6 +19,38 @@ const MyMenu = () => {
                 <ListItemText primary="대화 시나리오" />
             </ListItem>
         </div>
+        <div>
+            <ListItem component={Link} to="/Scenario" button>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="자동 답변" />
+            </ListItem>
+        </div>
+        <div>
+            <ListItem component={Link} to="/Scenario" button>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Intents" />
+            </ListItem>
+        </div>
+        <div>
+            <ListItem component={Link} to="/Scenario" button>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Entities" />
+            </ListItem>
+        </div>
+        <div>
+            <ListItem component={Link} to="/Scenario" button>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dialog" />
+            </ListItem>
+        </div>
     );
 };
 
