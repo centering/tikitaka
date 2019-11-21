@@ -1,0 +1,127 @@
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import DeleteIcon from '@material-ui/icons/Clear';
+import SaveIcon from '@material-ui/icons/Save';
+import Grid from '@material-ui/core/Grid';
+import Creatable from 'react-select/creatable';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        padding: theme.spacing(1, 2),
+    },
+}));
+
+const customStyles = {
+    menu: () => ({
+        display: 'none',
+    }),
+    multiValue: styles => {
+        return {
+            ...styles,
+            backgroundColor: '#D4F4FA',
+        };
+    },
+};
+
+const customStyles1 = {
+    menu: () => ({
+        display: 'none',
+    }),
+    multiValue: styles => {
+        return {
+            ...styles,
+            backgroundColor: '#FAE0D4',
+        };
+    },
+};
+
+const ScenarioList = ({ scenario, deleteScenario, reviseScenario }) => {
+    return (
+        <>
+            {scenario.map((scen, idx) => {
+                return <ShowScenario key={idx} scenario={scen} reviseScenario={reviseScenario} deleteScenario={deleteScenario} />;
+            })}
+        </>
+    );
+};
+
+const ShowScenario = ({ scenario, deleteScenario, reviseScenario }) => {
+    const classes = useStyles();
+    const [query, setQuery] = useState(
+        scenario.scenario_query.map(inner_qry => {
+            return { label: inner_qry.scenario_query_text, value: inner_qry.scenario_query_text };
+        }),
+    );
+    const [res, setRes] = useState(
+        scenario.scenario_response.map(inner_res => {
+            return { label: inner_res.scenario_response_text, value: inner_res.scenario_response_text };
+        }),
+    );
+    function saveScenario() {
+        const data = {
+            scenario_id: scenario.scenario_id,
+            scenario_query: query.map(qry => {
+                return qry.label;
+            }),
+            scenario_response: res.map(re => {
+                return re.label;
+            }),
+        };
+        reviseScenario(data);
+    }
+
+    function handleCreate(newVal, type) {
+        if (type === 'QUERY') query.push({ label: newVal, value: newVal });
+        else if (type === 'RES') res.push({ label: newVal, value: newVal });
+    }
+    function handleChange(changeVal, type) {
+        if (type === 'QUERY') setQuery(changeVal);
+        else if (type === 'RES') setRes(changeVal);
+    }
+
+    return (
+        <Paper className={classes.root}>
+            <h2>
+                {scenario.scenario_query.length !== 0 ? `#${scenario.scenario_query[0].scenario_query_text}` : '시나리오 이름을 붙여주세요'}
+                <span style={{ float: 'right' }}>
+                    <SaveIcon style={{ cursor: 'pointer' }} onClick={saveScenario} />
+                    <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => deleteScenario(scenario.scenario_id)} />
+                </span>
+            </h2>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    사용자가 이런 말을 하면
+                    <Creatable
+                        placeholder="사용자가 봇에게 할 법한 말을 입력하고 엔터!"
+                        styles={customStyles}
+                        // options={opt}
+                        isMulti
+                        menuPosition="fixed"
+                        value={query}
+                        isClearable
+                        onChange={e => handleChange(e, 'QUERY')}
+                        onCreateOption={e => handleCreate(e, 'QUERY')}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    봇이 다음 답변 중에서 랜덤으로 답해요
+                    <Creatable
+                        placeholder="새로운 답변을 입력하고 엔터!"
+                        // options={opt}
+                        styles={customStyles1}
+                        isMulti
+                        menuPosition="fixed"
+                        value={res}
+                        isClearable
+                        onChange={e => handleChange(e, 'RES')}
+                        onCreateOption={e => handleCreate(e, 'RES')}
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
+    );
+};
+
+export default ScenarioList;

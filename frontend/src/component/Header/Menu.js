@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import {Link,withRouter} from "react-router-dom";
+import { Link, withRouter } from 'react-router-dom';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -8,33 +8,18 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import Divider from '@material-ui/core/Divider';
 
-
-const MyMenu =()=>{
-
-   
-
-
-    return(
-
+const MyMenu = () => {
+    return (
         <div>
-
-
-            
             <ListItem component={Link} to="/Scenario" button>
                 <ListItemIcon>
-                    <DashboardIcon/>
+                    <DashboardIcon />
                 </ListItemIcon>
-                <ListItemText primary='대화 시나리오'/>
+                <ListItemText primary="대화 시나리오" />
             </ListItem>
-          
-           
         </div>
+    );
+};
 
-
-    )
-
-}
-
-export default withRouter(MyMenu)
+export default withRouter(MyMenu);

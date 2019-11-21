@@ -1,19 +1,25 @@
 import axios from 'axios';
 
+export function createScenarioGroup(info) {
+    return axios
+        .post('/api/v1/scenario_group/', info)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
 
-// export function getLogin(authInfo) {
-//     return axios.post('/api/v2/auth/login',authInfo)
-//         .then(function(response){
-
-//             if ( response.status==200)
-//                 return response.data
-//             else
-//                  return {}
-
-//         })
-//         .catch(function(response){
-//             return 'ng'
-//         })
-
-// }
-
+export function createScenario(info) {
+    return axios
+        .post('/api/v1/scenario/', info)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
