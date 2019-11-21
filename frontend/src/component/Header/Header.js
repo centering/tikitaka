@@ -7,8 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 
-import MyMenu from './Menu'
-import Router from './Router'
+import MyMenu from './Menu';
+import Router from './Router';
 
 const drawerWidth = 240;
 
@@ -32,37 +32,25 @@ const styles = theme => ({
     },
     toolbar: theme.mixins.toolbar,
     logo: {
-
-        height:30
-      },
+        height: 30,
+    },
     RightToolbar: {
-        marginLeft:'auto',
-        marginRight:'0'
-    }
-
+        marginLeft: 'auto',
+        marginRight: '0',
+    },
 });
 
 function ClippedDrawer(props) {
     const { classes } = props;
-    
-   
 
     return (
-
         <div className={classes.root}>
-
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
-                
-                    <Typography variant="h6" color="inherit" >
+                    <Typography variant="h6" color="inherit">
                         Tikitaka
                     </Typography>
-
-                
-
-        
-
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -74,20 +62,16 @@ function ClippedDrawer(props) {
             >
                 <div className={classes.toolbar} />
                 <List>
-                    <MyMenu/>
+                    <MyMenu />
                 </List>
-
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
 
-                <Router/>
-
+                <Router />
             </main>
         </div>
     );
 }
 
-
 export default withStyles(styles)(ClippedDrawer);
-
