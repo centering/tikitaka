@@ -65,6 +65,10 @@ class ScenarioService(Resource):
         args = scenario_get_parser.parse_args()
         result = ScenarioDao.get_scenario_list(args['scenario_group_id'])
 
+        for each_scenario in result:
+            each_scenario['scenario_query'] = ScenarioDao.get_scenario_query(each_scenario['id'])
+            each_scenario['scenario_response'] = ScenarioDao.get_scenario_response(each_scenario['id'])
+
         return {'code':'ok', 'data': result}
 
     @api.expect(scenario_update_proto)

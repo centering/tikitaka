@@ -25,6 +25,12 @@ class ReactionGroupService(Resource):
     def get(self):          #R
         result = ReactionGroupDao.get_reaction_group_list()
 
+        for each_reaction in result:
+            each_reaction['reaction_query'] = ReactionDao.get_reaction_query(each_reaction['id'])
+            each_reaction['reaction_response'] = ReactionDao.get_reaction_response(each_reaction['id'])
+
+        return {'code':'ok', 'data': result}
+
         return {'code':'ok', 'data': result}
 
     @api.expect(reaction_group_delete_parser)

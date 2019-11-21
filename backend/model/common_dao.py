@@ -2,7 +2,7 @@ import os, sys
 import json
 import pymysql
 
-sys.path.append('..')
+sys.path.append('../')
 
 from config import DB_connection_info
 
