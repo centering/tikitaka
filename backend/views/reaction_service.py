@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 
 from views.api import api, reaction_ns, reaction_group_ns
 
-from model import ReactionDao, ReactionGroupDao
+from model.reaction_dao import ReactionDao, ReactionGroupDao
 
 reaction_group_create_proto = reaction_group_ns.model("reaction_group_create_proto", {
     "name": fields.String("reaction_group name")

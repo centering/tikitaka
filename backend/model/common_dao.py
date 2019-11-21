@@ -1,11 +1,16 @@
+import os, sys
 import json
 import pymysql
+
+sys.path.append('..')
+
+from config import DB_connection_info
 
 def getConnection():
         """
         DB connection func
         """
-        from .config import DB_connection_info
+        
         return pymysql.connect(
             host=DB_connection_info.host,
             port=DB_connection_info.port,

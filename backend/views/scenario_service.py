@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 
 from views.api import api, scenario_ns, scenario_group_ns
 
-from model import ScenarioDao, ScenarioGroupDao
+from model.scenario_dao import ScenarioDao, ScenarioGroupDao
 
 scenario_group_create_proto = scenario_group_ns.model("scenario_group_create_proto", {
     "name": fields.String("scenario_group name")
