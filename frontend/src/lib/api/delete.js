@@ -13,20 +13,13 @@ export function deleteScenarioGroup(id) {
 }
 
 export function deleteScenario(id) {
-    return new Promise((resolve, reject) => {
-        resolve({
-            code: 'ok',
-            data: [],
+    return axios
+        .delete(`/api/v1/scenario/?scenario_id=${id}`)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
         });
-    });
-
-    // return axios
-    //     .post('/api/v2/auth/login', info)
-    //     .then(function(response) {
-    //         if (response.status == 200) return response.data;
-    //         return {};
-    //     })
-    //     .catch(function(response) {
-    //         return 'ng';
-    //     });
 }

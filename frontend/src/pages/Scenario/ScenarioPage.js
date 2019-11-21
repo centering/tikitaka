@@ -19,7 +19,7 @@ const ScenarioPage = ({
 }) => {
     return (
         <div>
-            <h2>대화 시나리오</h2>
+            <h2>대화 시나리오({envVar.get('selected_scenario_group_name')})</h2>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <GroupList scenarioGroup={scenarioGroup} envVar={envVar} setEnvVar={setEnvVar} deleteScenarioGroup={deleteScenarioGroup} />

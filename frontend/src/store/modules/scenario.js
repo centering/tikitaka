@@ -31,7 +31,13 @@ export default applyPenders(reducer, [
         onSuccess: (state, action) => {
             let new_state = state.set('scenario_group', action.payload.data);
             if (action.payload.data.length !== 0 && new_state.get('env_var').get('selected_scenario_group_id') === -1) {
-                new_state = new_state.set('env_var', new_state.get('env_var').set('selected_scenario_group_id', action.payload.data[0].id));
+                new_state = new_state.set(
+                    'env_var',
+                    new_state
+                        .get('env_var')
+                        .set('selected_scenario_group_id', action.payload.data[0].id)
+                        .set('selected_scenario_group_name', action.payload.data[0].name),
+                );
             }
             return new_state;
         },

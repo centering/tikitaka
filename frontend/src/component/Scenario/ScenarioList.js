@@ -50,17 +50,17 @@ const ShowScenario = ({ scenario, deleteScenario, reviseScenario }) => {
     const classes = useStyles();
     const [query, setQuery] = useState(
         scenario.scenario_query.map(inner_qry => {
-            return { label: inner_qry.scenario_query_text, value: inner_qry.scenario_query_text };
+            return { label: inner_qry.text, value: inner_qry.text };
         }),
     );
     const [res, setRes] = useState(
         scenario.scenario_response.map(inner_res => {
-            return { label: inner_res.scenario_response_text, value: inner_res.scenario_response_text };
+            return { label: inner_res.text, value: inner_res.text };
         }),
     );
     function saveScenario() {
         const data = {
-            scenario_id: scenario.scenario_id,
+            scenario_id: scenario.id,
             scenario_query: query.map(qry => {
                 return qry.label;
             }),
@@ -72,21 +72,21 @@ const ShowScenario = ({ scenario, deleteScenario, reviseScenario }) => {
     }
 
     function handleCreate(newVal, type) {
-        if (type === 'QUERY') query.push({ label: newVal, value: newVal });
-        else if (type === 'RES') res.push({ label: newVal, value: newVal });
+        if (type === 'QUERY') setQuery([...query, { label: newVal, value: newVal }]);
+        else if (type === 'RES') setRes([...res, { label: newVal, value: newVal }]);
     }
     function handleChange(changeVal, type) {
-        if (type === 'QUERY') setQuery(changeVal);
-        else if (type === 'RES') setRes(changeVal);
+        if (type === 'QUERY') setQuery(changeVal || []);
+        else if (type === 'RES') setRes(changeVal || []);
     }
 
     return (
         <Paper className={classes.root}>
             <h2>
-                {scenario.scenario_query.length !== 0 ? `#${scenario.scenario_query[0].scenario_query_text}` : '시나리오 이름을 붙여주세요'}
+                {query.length !== 0 ? `#${query[0].label}` : '시나리오 이름을 붙여주세요'}
                 <span style={{ float: 'right' }}>
                     <SaveIcon style={{ cursor: 'pointer' }} onClick={saveScenario} />
-                    <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => deleteScenario(scenario.scenario_id)} />
+                    <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => deleteScenario(scenario.id)} />
                 </span>
             </h2>
             <Grid container spacing={3}>

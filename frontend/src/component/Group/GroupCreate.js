@@ -56,6 +56,7 @@ const GroupCreate = ({ createScenarioGroup }) => {
                     value={text}
                     label="시나리오 그룹 이름"
                     className={classes.textField}
+                    autoFocus
                     margin="normal"
                     onKeyPress={e => handleKeyPress(e)}
                     onChange={e => setText(e.target.value)}

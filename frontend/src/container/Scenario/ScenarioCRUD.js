@@ -134,7 +134,7 @@ export async function ReviseScenario(info) {
                 open: true,
             });
         }
-
+        setActionStatus('NEED_UPDATE_SCENARIO');
         setLoading(false);
     } catch (e) {
         setLoading(false);
@@ -165,7 +165,7 @@ export async function DeleteScenario(id) {
                 open: true,
             });
         }
-
+        setActionStatus('NEED_UPDATE_SCENARIO');
         setLoading(false);
     } catch (e) {
         setLoading(false);

@@ -5,8 +5,9 @@ const GroupList = ({ scenarioGroup, envVar, setEnvVar, deleteScenarioGroup }) =>
     function handleDelete(id) {
         deleteScenarioGroup(id);
     }
-    function handleClick(id) {
-        const new_state = envVar.set('selected_scenario_group_id', id);
+    function handleClick(group) {
+        const new_state = envVar.set('selected_scenario_group_id', group.id).set('selected_scenario_group_name', group.name);
+
         setEnvVar(new_state);
     }
 
@@ -19,7 +20,7 @@ const GroupList = ({ scenarioGroup, envVar, setEnvVar, deleteScenarioGroup }) =>
                         clickable
                         label={group.name}
                         onDelete={() => handleDelete(group.id)}
-                        onClick={() => handleClick(group.id)}
+                        onClick={() => handleClick(group)}
                         color="primary"
                         variant="outlined"
                     />
