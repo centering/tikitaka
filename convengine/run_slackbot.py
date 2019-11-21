@@ -66,6 +66,7 @@ def event_handler(event_type, slack_event, slack, engine):
         query = re.sub(pattern='<@[A-Z0-9]+>', repl='', string=query).strip()
 
         text = engine.predict(query)
+        print(text)
 
         slack.chat.post_message(channel, text)
         return make_response("앱 멘션 메시지가 보내졌습니다.", 200, )
