@@ -100,3 +100,19 @@ def _delete_item_using_id(table_name, row_id):
     sql += """ WHERE id = {}""".format(row_id)
 
     sql_execute(sql)
+
+def _delete_item_using_condition(table_name, condition):
+    assert isinstance(condition, dict)
+
+    sql = """
+    DELETE FROM {} 
+    WHERE 1=1
+    """.format(table_name)
+
+    for key, value in condition.items():
+        if isinstance(value, str):
+            sql += """ AND {} = '{}' """.format(key, value)
+        else:
+            sql += """ AND {} = {}   """.format(key, value)
+
+    sql_execute(sql)

@@ -1,32 +1,44 @@
-from model.common_dao import sql_execute, _insert_item, _get_item, _update_item_using_id, _delete_item_using_id
+from model.common_dao import sql_execute, _insert_item, _get_item, _update_item_using_id, _delete_item_using_id, _delete_item_using_condition
+
+class ScenarioGroupDao:
+    def create_scenario_group(scenario_group_name):
+        condition = {'name': scenario_group_name}
+        
+        scenario_group_id = _insert_item('SCENARIO_GROUP', condition)
+
+        return scenario_group_id
+
+    def get_scenario_group_list():
+        condition = {}
+        return _get_item('SCENARIO_GROUP', condition)
+
+    def delete_scenario_group(scenario_group_id):
+        _delete_item_using_id('SCENARIO_GROUP', scenario_group_id)
 
 class ScenarioDao:
-    def get_project_list(id=None):
-        condition = {}
-        if id is not None:
-            condition['id'] = id
-
-        return _get_item('PROJECT', condition)
-
-    def create_project(name, user_email, desc=None):
-        project_info = {}
-        project_info['name'] = name
-        project_info['desc'] = desc if desc is not None else ''
-
-        project_id = _insert_item('PROJECT', project_info)
-
-        return project_id
+    def create_scenario(scenario_group_id):
+        condition = {'scenario_group_id': scenario_group_id}
+        scenario_id = _insert_item('SCENARIO', condition)
         
-    def modify_project(id, name=None, desc=None):
-        assert (name is not None) or (desc is not None)
+        return scenario_id
 
-        project_info = {}
-        if name is not None:
-            project_info['name'] = name
-        if desc is not None:
-            project_info['desc'] = desc
+    def get_scenario_list(scenario_group_id):
+        condition = {'scenario_group_id': scenario_group_id}
+        return _get_item('SCENARIO', condition)
 
-        _update_item_using_id('PROJECT', id, project_info)
+    def update_scenario(id, scenario_query=[], scenario_response=[]):
+        condition = {'scenario_id': id}
+        _delete_item_using_condition('SCENARIO_QUERY', condition)
+        _delete_item_using_condition('SCENARIO_RESPONSE', condition)
 
-    def delete_project(id):
-        _delete_item_using_id('PROJECT', id)
+        for query in scenario_query:
+            query_condition = {'scenario_id':id, 'text':query }
+            _insert_item('SCENARIO_QUERY', query_condition)
+
+        for query in scenario_response:
+            query_condition = {'scenario_id':id, 'text':query }
+            _insert_item('SCENARIO_RESPONSE', query_condition)
+
+    def delete_scenario(scenario_id):
+        condition = {'id': scenario_id}
+        _delete_item_using_condition('SCENARIO', condition)

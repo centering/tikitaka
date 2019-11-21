@@ -6,11 +6,11 @@ class Inference_connection_info:
     port = 8000
 
 class DB_connection_info:
-    host = '52.231.38.17'
+    host = '52.141.6.60'
     port = 3306
     user = 'root'
     passwd = 'piglet'
-    db = 'piglet_remaster'
+    db = 'tikitaka'
     charset = 'utf8'
 
 class log_connection_info:

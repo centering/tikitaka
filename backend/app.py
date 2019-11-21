@@ -2,12 +2,9 @@ from flask import Flask, render_template, jsonify, make_response
 
 from flask_jwt_extended import JWTManager
 
-from views.api import api_v2, api, blacklist
-from views import ProjectService
-from views import TaskService
-from views import UserGroupService
-from views import UserService
-from views.auth_service import *
+from views.api import api_v1, api, blacklist
+from views import reaction_service
+from views import scenario_service
 
 from logging.handlers import TimedRotatingFileHandler
 
@@ -21,7 +18,7 @@ import json
 
 app = Flask('tikitaka', static_url_path='', static_folder='../frontend/public', template_folder='../frontend/public')
 
-app.register_blueprint(api_v2)
+app.register_blueprint(api_v1)
 
 app.config['JWT_SECRET_KEY'] = 'thisissecret'  # Change this!
 app.config['JWT_ACCESS_TOKEN_EXPIRES']= datetime.timedelta(days=1)

@@ -6,66 +6,77 @@ from views.api import api, reaction_ns, reaction_group_ns
 
 from model import ReactionDao, ReactionGroupDao
 
-reaction_create_proto = reaction_ns.model("reaction_create_proto", {
-    "reaction_name": fields.Integer("project name"),
-    "reaction_name": fields.String("project name")
+reaction_group_create_proto = reaction_group_ns.model("reaction_group_create_proto", {
+    "name": fields.String("reaction_group name")
 })
+reaction_group_delete_parser = api.parser()
+reaction_group_delete_parser.add_argument('id', location='args')
 
-project_update_proto = project_ns.model("project_update_proto", {
-    "id": fields.Integer("project id"),
-    "name": fields.String("project name"),
-    "desc": fields.String("proejct description")
-})
-
-project_get_parser = api.parser()
-project_get_parser.add_argument('id', location='args')
-project_get_parser.add_argument('name', location='args')
-
-project_delete_parser = api.parser()
-project_delete_parser.add_argument('id', location='args')
-
-@project_ns.route('/')
+@reaction_group_ns.route('/')
 @api.doc(responses={404: 'error'})
-class ReactionService(Resource):
-    @api.expect(project_create_proto)
+class ReactionGroupService(Resource):
+    @api.expect(reaction_group_create_proto)
     def post(self):         #C
         args = request.json
+        reaction_group_id = ReactionGroupDao.create_reaction_group(args['name'])
 
-        project_id = ProjectDao.create_project(args['project_name'], args['project_desc'], desc=None if 'project_desc' not in args.keys() else args['project_desc'])
+        return {'code':'ok', 'message': 'successed reaction group create'}
 
-        #create default admin, guest user group
-        user_group_info = {}
-        user_group_info['project_id'] = project_id
-        
-        user_group_info['name'] = 'Guest'
-        guest_group_id = UserGroupDao.create_user_group(user_group_info['name'], user_group_info['project_id'], 'Guest')
-        
-        user_group_info['name'] = 'Admin'
-        admin_group_id = UserGroupDao.create_user_group(user_group_info['name'], user_group_info['project_id'], 'Admin')
-
-        #assign project creation user to default admin group
-        UserGroupDao.assign_user_to_user_group(args['email'], admin_group_id)
-
-        return {'code': 'ok', 'message': 'SUCCESS_CREATE_PROJECT', 'data':UserDao.get_user_project_list(args['email'])}
-
-    @api.expect(project_get_parser)
     def get(self):          #R
-        args = project_get_parser.parse_args()
-        result = ProjectDao.get_project_list(args['id'])
+        result = ReactionGroupDao.get_reaction_group_list()
 
         return {'code':'ok', 'data': result}
 
-    @api.expect(project_update_proto)   
-    def put(self):          #U
-        args = request.json
-
-        ProjectDao.modify_project(args['id'], args['name'], args['desc'])
-
-        return {'code':'ok', 'message':'SUCCESS_PROJECT_MODIFY'}
-      
-    @api.expect(project_delete_parser)
+    @api.expect(reaction_group_delete_parser)
     def delete(self):       #D
-        args = project_delete_parser.parse_args()
-        ProjectDao.delete_project(args['id'])
+        args = reaction_group_delete_parser.parse_args()
+        ReactionGroupDao.delete_reaction_group(args['id'])
 
-        return {'code':'ok', 'message':'successed project delete'}
+        return {'code':'ok', 'message':'successed reaction group delete'}
+
+reaction_create_proto = reaction_ns.model("reaction_create_proto", {
+    "reaction_group_id": fields.Integer("reaction group id")
+})
+
+reaction_update_proto = reaction_ns.model("reaction_update_proto", {
+    "reaction_id":          fields.Integer("reaction id"),
+    "reaction_query":       fields.Raw("reaction queries"),
+    "reaction_response":    fields.Raw("reaction responses")
+})
+
+reaction_get_parser = api.parser()
+reaction_get_parser.add_argument('reaction_group_id', location='args')
+
+reaction_delete_parser = api.parser()
+reaction_delete_parser.add_argument('reaction_id', location='args')
+
+@reaction_ns.route('/')
+@api.doc(responses={404: 'error'})
+class ReactionService(Resource):
+    @api.expect(reaction_create_proto)
+    def post(self):         #C
+        args = request.json
+        reaction_id = ReactionDao.create_reaction(args['reaction_group_id'])
+
+        return {'code':'ok', 'message': 'successed reaction group create'}
+
+    @api.expect(reaction_get_parser)
+    def get(self):          #R
+        args = reaction_get_parser.parse_args()
+        result = ReactionDao.get_reaction_list(args['reaction_group_id'])
+
+        return {'code':'ok', 'data': result}
+
+    @api.expect(reaction_update_proto)
+    def put(self):         #U
+        args = request.json
+        reaction_id = ReactionDao.update_reaction(args['reaction_id'], args['reaction_query'], args['reaction_response'])
+
+        return {'code':'ok', 'message': 'successed reaction update'}
+
+    @api.expect(reaction_delete_parser)
+    def delete(self):       #D
+        args = reaction_delete_parser.parse_args()
+        ReactionDao.delete_reaction(args['reaction_id'])
+
+        return {'code':'ok', 'message':'successed reaction delete'}
