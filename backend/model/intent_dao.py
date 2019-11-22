@@ -1,44 +1,31 @@
-from model.common_dao import sql_execute, _insert_item, _get_item, _update_item_using_id, _delete_item_using_id, _delete_item_using_condition
+from model.common_dao import sql_execute, _insert_item, _get_item, _update_item_using_id, _delete_item_using_condition
 
-class ReactionGroupDao:
-    def create_reaction_group(reaction_group_name):
-        condition = {'name': reaction_group_name}
+class IntentDao:
+    def create_intent(name, description):
+        condition = {'name': name, 'description': description}
+        intent_id = _insert_item('INTENT', condition)
         
-        reaction_group_id = _insert_item('REACTION_GROUP', condition)
+        return intent_id
 
-        return reaction_group_id
+    def get_intent_list(condition={}):
+        return _get_item('INTENT', condition)
 
-    def get_reaction_group_list():
-        condition = {}
-        return _get_item('REACTION_GROUP', condition)
+    def get_intent_utterance(intent_id):
+        condition = {'intent_id': intent_id}
+        return _get_item('INTENT_UTTERANCE', condition)
 
-    def delete_reaction_group(reaction_group_id):
-        _delete_item_using_id('REACTION_GROUP', reaction_group_id)
+    def update_intent(id, name):
+        condition = {'name': name}
+        _update_item_using_id('INTENT', id, condition)
 
-class ReactionDao:
-    def create_reaction(reaction_group_id):
-        condition = {'reaction_group_id': reaction_group_id}
-        reaction_id = _insert_item('reaction', condition)
-        
-        return reaction_id
+    def update_intent_utterance(id, intent_utterance):
+        condition = {'intent_id': id}
+        _delete_item_using_condition('INTENT_UTTERANCE', condition)
 
-    def get_reaction_list(reaction_group_id):
-        condition = {'reaction_group_id': reaction_group_id}
-        return _get_item('reaction', condition)
+        for utterance in intent_utterance:
+            utterance_condition = {'intent_id':id, 'text':utterance }
+            _insert_item('INTENT_UTTERANCE', utterance_condition)
 
-    def update_reaction(id, reaction_query=[], reaction_response=[]):
-        condition = {'reaction_id': id}
-        _delete_item_using_condition('REACTION_QUERY', condition)
-        _delete_item_using_condition('REACTION_RESPONSE', condition)
-
-        for query in reaction_query:
-            query_condition = {'reaction_id':id, 'text':query }
-            _insert_item('REACTION_QUERY', query_condition)
-
-        for query in reaction_response:
-            query_condition = {'reaction_id':id, 'text':query }
-            _insert_item('REACTION_RESPONSE', query_condition)
-
-    def delete_reaction(reaction_id):
-        condition = {'id': reaction_id}
-        _delete_item_using_condition('REACTION', condition)
+    def delete_intent(intent_id):
+        condition = {'id': intent_id}
+        _delete_item_using_condition('INTENT', condition)

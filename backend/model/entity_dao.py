@@ -1,44 +1,31 @@
 from model.common_dao import sql_execute, _insert_item, _get_item, _update_item_using_id, _delete_item_using_id, _delete_item_using_condition
 
-class ReactionGroupDao:
-    def create_reaction_group(reaction_group_name):
-        condition = {'name': reaction_group_name}
+class EntityDao:
+    def create_entity(name, value):
+        condition = {'name': name, 'value': value}
+        entity_id = _insert_item('ENTITY', condition)
         
-        reaction_group_id = _insert_item('REACTION_GROUP', condition)
+        return entity_id
 
-        return reaction_group_id
+    def get_entity_list(condition={}):
+        return _get_item('ENTITY', condition)
 
-    def get_reaction_group_list():
-        condition = {}
-        return _get_item('REACTION_GROUP', condition)
+    def get_entity_synonym(entity_id):
+        condition = {'entity_id': entity_id}
+        return _get_item('SYNONYM', condition)
 
-    def delete_reaction_group(reaction_group_id):
-        _delete_item_using_id('REACTION_GROUP', reaction_group_id)
+    def update_entity(id, name, value):
+        condition = {'name': name, 'value': value}
+        _update_item_using_id('ENTITY', id, condition)
 
-class ReactionDao:
-    def create_reaction(reaction_group_id):
-        condition = {'reaction_group_id': reaction_group_id}
-        reaction_id = _insert_item('reaction', condition)
-        
-        return reaction_id
+    def update_entity_synonym(id, synonym):
+        condition = {'entity_id': id}
+        _delete_item_using_condition('SYNONYM', condition)
 
-    def get_reaction_list(reaction_group_id):
-        condition = {'reaction_group_id': reaction_group_id}
-        return _get_item('reaction', condition)
+        for query in synonym:
+            query_condition = {'entity_id':id, 'text':query }
+            _insert_item('SYNONYM', query_condition)
 
-    def update_reaction(id, reaction_query=[], reaction_response=[]):
-        condition = {'reaction_id': id}
-        _delete_item_using_condition('REACTION_QUERY', condition)
-        _delete_item_using_condition('REACTION_RESPONSE', condition)
-
-        for query in reaction_query:
-            query_condition = {'reaction_id':id, 'text':query }
-            _insert_item('REACTION_QUERY', query_condition)
-
-        for query in reaction_response:
-            query_condition = {'reaction_id':id, 'text':query }
-            _insert_item('REACTION_RESPONSE', query_condition)
-
-    def delete_reaction(reaction_id):
-        condition = {'id': reaction_id}
-        _delete_item_using_condition('REACTION', condition)
+    def delete_entity(id):
+        condition = {'id': id}
+        _delete_item_using_condition('ENTITY', condition)
