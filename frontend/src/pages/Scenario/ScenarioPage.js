@@ -22,8 +22,16 @@ const ScenarioPage = ({
             <h2>대화 시나리오({envVar.get('selected_scenario_group_name')})</h2>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <GroupList scenarioGroup={scenarioGroup} envVar={envVar} setEnvVar={setEnvVar} deleteScenarioGroup={deleteScenarioGroup} />
-                    <GroupCreate createScenarioGroup={createScenarioGroup} />
+                    {scenarioGroup && (
+                        <GroupList
+                            groupName="scenario_group"
+                            Group={scenarioGroup}
+                            envVar={envVar}
+                            setEnvVar={setEnvVar}
+                            deleteGroup={deleteScenarioGroup}
+                        />
+                    )}
+                    <GroupCreate createGroup={createScenarioGroup} />
                 </Grid>
                 <Grid item xs={12}>
                     {scenario && <ScenarioList scenario={scenario} deleteScenario={deleteScenario} reviseScenario={reviseScenario} />}

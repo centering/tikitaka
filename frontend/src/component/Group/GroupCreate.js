@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const GroupCreate = ({ createScenarioGroup }) => {
+const GroupCreate = ({ createGroup }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [text, setText] = React.useState('');
@@ -27,7 +27,7 @@ const GroupCreate = ({ createScenarioGroup }) => {
     };
     function handleKeyPress(e) {
         if (e.key === 'Enter') {
-            createScenarioGroup({ name: text });
+            createGroup({ name: text });
             setText('');
             handleClose();
         }

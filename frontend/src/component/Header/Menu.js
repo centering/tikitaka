@@ -19,11 +19,18 @@ const MyMenu = () => {
                 <ListItemText primary="대화 시나리오" />
             </ListItem>
 
-            <ListItem component={Link} to="/Scenario" button>
+            <ListItem component={Link} to="/Answer" button>
                 <ListItemIcon>
                     <DashboardIcon />
                 </ListItemIcon>
                 <ListItemText primary="자동 답변" />
+            </ListItem>
+
+            <ListItem component={Link} to="/Setting" button>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="설정" />
             </ListItem>
 
             <ListItem component={Link} to="/Scenario" button>
