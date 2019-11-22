@@ -27,11 +27,11 @@ class ReactionDao:
         return _get_item('reaction', condition)
 
     def get_reaction_query(reaction_id):
-        condition = {'reaction_id': scenario_id}
+        condition = {'reaction_id': reaction_id}
         return _get_item('REACTION_QUERY', condition)
 
     def get_reaction_response(reaction_id):
-        condition = {'reaction_id': scenario_id}
+        condition = {'reaction_id': reaction_id}
         return _get_item('REACTION_RESPONSE', condition)
 
     def update_reaction(id, reaction_query=[], reaction_response=[]):
