@@ -92,7 +92,10 @@ if __name__ == '__main__':
 
             ques_embed_dict = {}
             for k in ques_embed_dict_old.keys():
-                ques_embed_dict[k] = [d[k] for d in [ques_embed_dict_old, ques_embed_dict_new]]
+                if ques_embed_dict_old[k].__class__ == np.ndarray:
+                    ques_embed_dict[k] = [d[k] for d in np.concatenate([ques_embed_dict_old, ques_embed_dict_new])]
+                else:
+                    ques_embed_dict[k] = [d[k] for d in [ques_embed_dict_old, ques_embed_dict_new]]
 
             print(" {} more sentences are added".format(len(uniq_idx)))
 
