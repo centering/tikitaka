@@ -14,8 +14,8 @@ class IntentDao:
         condition = {'intent_id': intent_id}
         return _get_item('INTENT_UTTERANCE', condition)
 
-    def update_intent(id, name):
-        condition = {'name': name}
+    def update_intent(id, name, description):
+        condition = {'name': name, 'description': description}
         _update_item_using_id('INTENT', id, condition)
 
     def update_intent_utterance(id, intent_utterance):
