@@ -7,7 +7,7 @@ import { ScenarioActions } from '../../store/actionCreator';
 
 import * as IntentCRUD from './IntentCRUD';
 
-class ScenarioContainer extends Component {
+class IntentContainer extends Component {
     componentDidMount() {
         ScenarioCRUD.GetScenarioGroup();
     }
@@ -56,4 +56,4 @@ export default connect(({ common, scenario }) => ({
     scenario: scenario.get('scenario'),
     env_var: scenario.get('env_var'),
     action_status: common.get('action_status'),
-}))(ScenarioContainer);
+}))(IntentContainer);

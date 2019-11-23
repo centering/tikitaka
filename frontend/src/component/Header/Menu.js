@@ -38,21 +38,21 @@ const MyMenu = () => {
                 <ListItemText primary="설정" />
             </ListItem>
 
-            <ListItem component={Link} to="/Scenario" button>
+            <ListItem component={Link} to="/Intent" button>
                 <ListItemIcon>
                     <AnnouncementIcon />
                 </ListItemIcon>
                 <ListItemText primary="Intents" />
             </ListItem>
 
-            <ListItem component={Link} to="/Scenario" button>
+            <ListItem component={Link} to="/Entity" button>
                 <ListItemIcon>
                     <ListIcon />
                 </ListItemIcon>
                 <ListItemText primary="Entities" />
             </ListItem>
 
-            <ListItem component={Link} to="/Scenario" button>
+            <ListItem component={Link} to="/Dialog" button>
                 <ListItemIcon>
                     <QuestionAnswerIcon />
                 </ListItemIcon>

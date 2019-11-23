@@ -1,12 +1,12 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 
-import AddIntent from '../../component/Intent/AddIntent';
-import DeleteIntents from '../../component/Intent/DeleteIntents';
-import ExportIntents from '../../component/Intent/ExportIntents';
-import ImportIntents from '../../component/Intent/ImportIntents';
+import GroupList from '../../component/Group/GroupList';
+import GroupCreate from '../../component/Group/GroupCreate';
+import AddScenario from '../../component/Scenario/AddScenario';
+import ScenarioList from '../../component/Scenario/ScenarioList';
 
-const IntentPage = ({
+const ScenarioPage = ({
     scenarioGroup,
     setEnvVar,
     envVar,
@@ -19,6 +19,7 @@ const IntentPage = ({
 }) => {
     return (
         <div>
+            <h2>대화 시나리오({envVar.get('selected_scenario_group_name')})</h2>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     {scenarioGroup && (
@@ -38,16 +39,7 @@ const IntentPage = ({
 
                 <Grid item xs={12}>
                     <div style={{ top: 0, position: 'sticky' }}>
-                        <AddIntent createScenario={createScenario} envVar={envVar} />
-                    </div>
-                    <div style={{ top: 0, position: 'sticky' }}>
-                        <ImportIntents createScenario={createScenario} envVar={envVar} />
-                    </div>
-                    <div style={{ top: 0, position: 'sticky' }}>
-                        <ExportIntents createScenario={createScenario} envVar={envVar} />
-                    </div>
-                    <div style={{ top: 0, position: 'sticky' }}>
-                        <DeleteIntents createScenario={createScenario} envVar={envVar} />
+                        <AddScenario createScenario={createScenario} envVar={envVar} />
                     </div>
                 </Grid>
             </Grid>
@@ -55,4 +47,4 @@ const IntentPage = ({
     );
 };
 
-export default IntentPage;
+export default ScenarioPage;

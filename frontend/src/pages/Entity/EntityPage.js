@@ -19,7 +19,6 @@ const EntityPage = ({
 }) => {
     return (
         <div>
-            <h2>대화 시나리오({envVar.get('selected_scenario_group_name')})</h2>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     {scenarioGroup && (
@@ -39,7 +38,16 @@ const EntityPage = ({
 
                 <Grid item xs={12}>
                     <div style={{ top: 0, position: 'sticky' }}>
-                        <AddScenario createScenario={createScenario} envVar={envVar} />
+                        <AddEntity createScenario={createScenario} envVar={envVar} />
+                    </div>
+                    <div style={{ top: 0, position: 'sticky' }}>
+                        <ImportEntities createScenario={createScenario} envVar={envVar} />
+                    </div>
+                    <div style={{ top: 0, position: 'sticky' }}>
+                        <ExportEntities createScenario={createScenario} envVar={envVar} />
+                    </div>
+                    <div style={{ top: 0, position: 'sticky' }}>
+                        <DeleteEntities createScenario={createScenario} envVar={envVar} />
                     </div>
                 </Grid>
             </Grid>

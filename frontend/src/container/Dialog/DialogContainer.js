@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import EntityPage from '../../pages/Entity/EntityPage';
-import { EntityActions } from '../../store/actionCreator';
+import ScenarioPage from '../../pages/Scenario/ScenarioPage';
+import { ScenarioActions } from '../../store/actionCreator';
 
-import * as EntityCRUD from './EntityCRUD';
+import * as ScenarioCRUD from './DialogCRUD';
 
-class EntityContainer extends Component {
+class ScenarioContainer extends Component {
     componentDidMount() {
-        EntityCRUD.GetScenarioGroup();
+        ScenarioCRUD.GetScenarioGroup();
     }
 
     componentDidUpdate(prevProps) {
@@ -56,4 +56,4 @@ export default connect(({ common, scenario }) => ({
     scenario: scenario.get('scenario'),
     env_var: scenario.get('env_var'),
     action_status: common.get('action_status'),
-}))(EntityContainer);
+}))(ScenarioContainer);
