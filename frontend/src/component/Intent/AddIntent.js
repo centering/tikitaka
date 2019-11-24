@@ -5,7 +5,7 @@ const AddIntent = ({ createIntent, envVar }) => {
     return (
         <>
             <Button
-                onClick={() => createIntent({ scenario_group_id: envVar.get('selected_scenario_group_id') })}
+                onClick={() => createIntent()}
                 variant="contained"
                 color="primary"
             >

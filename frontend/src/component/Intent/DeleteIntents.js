@@ -6,7 +6,7 @@ const DeleteIntents = ({ deleteIntents, envVar }) => {
     return (
         <>
             <Button
-                onClick={() => deleteIntents({ scenario_group_id: envVar.get('selected_scenario_group_id') })}
+                onClick={() => deleteIntents()}
                 variant="contained"
                 color="primary"
                 startIcon={<DeleteIcon />}

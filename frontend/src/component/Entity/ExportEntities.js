@@ -17,4 +17,4 @@ const ExportEntities = ({ exportEntities, envVar }) => {
     );
 };
 
-export default ExportIntents;
+export default ExportEntities;

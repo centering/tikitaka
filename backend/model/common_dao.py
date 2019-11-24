@@ -97,6 +97,34 @@ def _update_item_using_id(table_name, row_id, column_value_dict):
 
     sql_execute(sql)
 
+def _update_item_using_condition(table_name, where_condition, update_condition):
+    if not isinstance(where_condition, dict):
+        raise ValueError('where_condition should be dictionary format')
+
+    if not isinstance(update_condition, dict):
+        raise ValueError('update_condition should be dictionary format')
+    
+    sql = """
+    UPDATE {} SET
+    """.format(table_name)
+
+    for column, value in update_condition.items():
+        if isinstance(value, str):
+            sql += """ `{}` = '{}',""".format(column, value)
+        else:
+            sql += """ `{}` = {},""".format(column, value)
+
+    sql = sql[:-1]
+    sql += " WHERE 1=1 "
+
+    for column, value in where_condition.items():
+        if isinstance(value, str):
+            sql += """ AND `{}` = '{}' """.format(column, value)
+        else:
+            sql += """ AND `{}` = {} """.format(column, value)
+
+    sql_execute(sql)
+
 def _delete_item_using_id(table_name, row_id):
     sql = """
     DELETE FROM {} 

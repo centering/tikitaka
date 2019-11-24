@@ -9,22 +9,12 @@ import * as IntentCRUD from './IntentCRUD';
 
 class IntentContainer extends Component {
     componentDidMount() {
-        ScenarioCRUD.GetScenarioGroup();
+        IntentCRUD.GetScenarioGroup();
     }
 
     componentDidUpdate(prevProps) {
         const { env_var, action_status } = this.props;
-        if (
-            (prevProps.env_var.get('selected_scenario_group_id') !== env_var.get('selected_scenario_group_id') ||
-                (prevProps.action_status === '' && action_status === 'NEED_UPDATE_SCENARIO')) &&
-            env_var.get('selected_scenario_group_id') !== undefined
-        ) {
-            ScenarioCRUD.GetScenario(env_var.get('selected_scenario_group_id'));
-        }
-
-        if (prevProps.action_status === '' && action_status === 'NEED_UPDATE_SCENARIO_GROUP') {
-            ScenarioCRUD.GetScenarioGroup();
-        }
+        
     }
 
     setEnvVar(value) {
@@ -35,25 +25,11 @@ class IntentContainer extends Component {
         const { scenario, scenario_group, env_var } = this.props;
         return (
             <div>
-                <ScenarioPage
-                    scenarioGroup={scenario_group}
-                    scenario={scenario}
-                    envVar={env_var}
-                    setEnvVar={this.setEnvVar}
-                    createScenarioGroup={ScenarioCRUD.CreateScenarioGroup}
-                    reviseScenario={ScenarioCRUD.ReviseScenario}
-                    deleteScenario={ScenarioCRUD.DeleteScenario}
-                    deleteScenarioGroup={ScenarioCRUD.DeleteScenarioGroup}
-                    createScenario={ScenarioCRUD.CreateScenario}
-                />
             </div>
         );
     }
 }
 
 export default connect(({ common, scenario }) => ({
-    scenario_group: scenario.get('scenario_group'),
-    scenario: scenario.get('scenario'),
-    env_var: scenario.get('env_var'),
-    action_status: common.get('action_status'),
+    
 }))(IntentContainer);

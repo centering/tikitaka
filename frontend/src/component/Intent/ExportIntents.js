@@ -6,7 +6,7 @@ const ExportIntents = ({ exportIntents, envVar }) => {
     return (
         <>
             <Button
-                onClick={() => exportIntents({ scenario_group_id: envVar.get('selected_scenario_group_id') })}
+                onClick={() => exportIntents()}
                 variant="contained"
                 color="primary"
                 startIcon={<CloudDownloadIcon />}

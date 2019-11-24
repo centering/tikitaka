@@ -6,7 +6,7 @@ const ImportIntents = ({ importIntents, envVar }) => {
     return (
         <>
             <Button
-                onClick={() => importIntents({ scenario_group_id: envVar.get('selected_scenario_group_id') })}
+                onClick={() => importIntents()}
                 variant="contained"
                 color="primary"
                 startIcon={<CloudUploadIcon />}
