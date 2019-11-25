@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { SettingActions } from '../../store/actionCreator';
+
 import * as SettingCRUD from './SettingCRUD';
 import SettingPage from '../../pages/Setting/SettingPage';
 
@@ -18,15 +18,11 @@ class SettingContainer extends Component {
         }
     }
 
-    setSetting(value) {
-        SettingActions.set_setting(value);
-    }
-
     render() {
         const { setting } = this.props;
         return (
             <>
-                <SettingPage setSetting={this.setSetting} setting={setting} reviseSetting={SettingCRUD.ReviseSetting} />
+                <SettingPage setting={setting} reviseSetting={SettingCRUD.ReviseSetting} />
             </>
         );
     }

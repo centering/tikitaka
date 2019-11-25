@@ -26,7 +26,7 @@ export function reviseAnswer(info) {
 
 export function reviseSetting(info) {
     return axios
-        .put('/api/v1/config/', info)
+        .put('/api/v1/setting/', info)
         .then(function(response) {
             if (response.status === 200) return response.data;
             return {};

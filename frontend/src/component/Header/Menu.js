@@ -38,6 +38,13 @@ const MyMenu = () => {
                 <ListItemText primary="설정" />
             </ListItem>
 
+            <ListItem component={Link} to="/Chat" button>
+                <ListItemIcon>
+                    <BuildIcon />
+                </ListItemIcon>
+                <ListItemText primary="대화하기" />
+            </ListItem>
+
             <ListItem component={Link} to="/Intent" button>
                 <ListItemIcon>
                     <AnnouncementIcon />

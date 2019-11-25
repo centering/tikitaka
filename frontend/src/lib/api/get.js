@@ -57,25 +57,15 @@ export function GetAnswer(reaction_group_id) {
 }
 
 export function getSetting() {
-    return new Promise(resolve => {
-        resolve({
-            code: 'ok',
-            data: {
-                scenario_model_threshold: 1,
-                reaction_model_threshold: 1,
-                retrieval_model_threshold: 1,
-            },
-        });
-    });
-    // const url = `/api/v1/reaction/?answer_group_id=${answer_gruop_id}`;
+    const url = `/api/v1/setting/`;
 
-    // return axios
-    //     .get(url)
-    //     .then(function(response) {
-    //         if (response.status === 200) return response.data;
-    //         return {};
-    //     })
-    //     .catch(function() {
-    //         return 'ng';
-    //     });
+    return axios
+        .get(url)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
 }

@@ -47,3 +47,14 @@ export function createAnswer(info) {
             return 'ng';
         });
 }
+export function doChat(info) {
+    return axios
+        .post('/api/v1/chat/', info)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}

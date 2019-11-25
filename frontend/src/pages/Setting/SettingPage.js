@@ -4,34 +4,37 @@ import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 
-const SettingPage = ({ setting, reviseSetting, setSetting }) => {
-    const keys = setting.keySeq().toArray();
-
+const SettingPage = ({ setting, reviseSetting }) => {
+    function onSave() {
+        const value = setting.reduce((obj, set) => {
+            obj[set.name] = set.value;
+            return obj;
+        }, {});
+        reviseSetting(value);
+    }
     return (
         <>
             <h2>설정</h2>
 
-            {keys.map((key, idx) => {
-                return <ShowSetting setSetting={setSetting} key={idx} keyName={key} setting={setting} />;
+            {setting.map((set, idx) => {
+                return <ShowSetting key={idx} setting={set} />;
             })}
 
-            <Button onClick={() => reviseSetting(setting.toJS())} variant="contained" color="primary">
+            <Button onClick={onSave} variant="contained" color="primary">
                 저장
             </Button>
         </>
     );
 };
 
-const ShowSetting = ({ keyName, setting, setSetting }) => {
+const ShowSetting = ({ setting }) => {
     function handleChange(e, value) {
-        const new_state = setting.set(keyName, value);
-        setSetting(new_state);
+        setting.value = value;
     }
-
     return (
         <div style={{ width: '400px' }}>
-            <Typography gutterBottom>{keyName}</Typography>
-            <Slider onChange={handleChange} defaultValue={setting.get(keyName)} min={0} max={1} step={0.01} marks valueLabelDisplay="on" />
+            <Typography gutterBottom>{setting.name}</Typography>
+            <Slider onChange={handleChange} defaultValue={setting.value} min={0} max={1} step={0.01} marks valueLabelDisplay="on" />
         </div>
     );
 };
