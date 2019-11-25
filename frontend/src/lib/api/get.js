@@ -42,8 +42,8 @@ export function getAnswerGroup() {
         });
 }
 
-export function GetAnswer(answer_gruop_id) {
-    const url = `/api/v1/reaction/?answer_group_id=${answer_gruop_id}`;
+export function GetAnswer(reaction_group_id) {
+    const url = `/api/v1/reaction/?reaction_group_id=${reaction_group_id}`;
 
     return axios
         .get(url)

@@ -33,11 +33,12 @@ class AnswerContainer extends Component {
 
     render() {
         const { answer, answer_group, env_var } = this.props;
+
         return (
             <div>
                 <AnswerPage
-                    AnswerGroup={answer_group}
-                    Answer={answer}
+                    answerGroup={answer_group}
+                    answer={answer}
                     envVar={env_var}
                     setEnvVar={this.setEnvVar}
                     createAnswerGroup={AnswerCRUD.CreateAnswerGroup}

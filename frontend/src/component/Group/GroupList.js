@@ -10,7 +10,6 @@ const GroupList = ({ Group, envVar, setEnvVar, deleteGroup, groupName }) => {
 
         setEnvVar(new_state);
     }
-
     return (
         <>
             {Group.map(group => {

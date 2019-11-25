@@ -31,7 +31,7 @@ const ShowSetting = ({ keyName, setting, setSetting }) => {
     return (
         <div style={{ width: '400px' }}>
             <Typography gutterBottom>{keyName}</Typography>
-            <Slider onChange={handleChange} defaultValue={setting.get(keyName)} min={0} max={1} step={0.01} marks valueLabelDisplay="auto" />
+            <Slider onChange={handleChange} defaultValue={setting.get(keyName)} min={0} max={1} step={0.01} marks valueLabelDisplay="on" />
         </div>
     );
 };

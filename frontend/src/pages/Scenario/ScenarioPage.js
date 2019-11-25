@@ -34,12 +34,12 @@ const ScenarioPage = ({
                     <GroupCreate createGroup={createScenarioGroup} />
                 </Grid>
                 <Grid item xs={12}>
-                    {scenario && <ScenarioList scenario={scenario} deleteScenario={deleteScenario} reviseScenario={reviseScenario} />}
+                    {scenario && <ScenarioList type="scenario" scenario={scenario} deleteScenario={deleteScenario} reviseScenario={reviseScenario} />}
                 </Grid>
 
                 <Grid item xs={12}>
                     <div style={{ top: 0, position: 'sticky' }}>
-                        <AddScenario createScenario={createScenario} envVar={envVar} />
+                        <AddScenario type="scenario" createScenario={createScenario} envVar={envVar} />
                     </div>
                 </Grid>
             </Grid>
