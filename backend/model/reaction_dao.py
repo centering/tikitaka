@@ -41,7 +41,7 @@ class ReactionDao:
 
         for type in reaction_type:
             type_condition = {'reaction_id':id, 'text':type }
-            _insert_item('REACTION_TYPE', query_condition)
+            _insert_item('REACTION_TYPE', type_condition)
 
         for query in reaction_response:
             query_condition = {'reaction_id':id, 'text':query }
