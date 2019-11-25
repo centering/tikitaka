@@ -89,7 +89,6 @@ if __name__ == '__main__':
             pass
         else:
             res_cluster_dict, ques_embed_dict_new = construct_output(data_new)
-
             ques_embed_dict = {}
             for k in ques_embed_dict_old.keys():
                 if ques_embed_dict_old[k].__class__ == np.ndarray:
