@@ -86,12 +86,14 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
                  input_embedding_endpoint: str,
                  ques_embedding_dict: dict,
                  response_cluster_dict: dict,
-                 k: int):
+                 k: int,
+                 thres_prob: float):
 
         self.input_embedding_endpoint = input_embedding_endpoint
         self.ques_embedding_dict = ques_embedding_dict
         self.response_cluster_dict = response_cluster_dict
         self.k = k
+        self.thres_prob = thres_prob
 
         self.faiss_index, self.class_list = self._faiss_indexing()
 
@@ -115,7 +117,9 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
             pred_counts = Counter(topk_class)
             res_class = max(pred_counts)
-            if pred_counts[res_class] >= math.ceil(self.k / 2):
+            max_prob = D[0].max()
+
+            if pred_counts[res_class] >= math.ceil(self.k / 2) and max_prob >= self.thres_prob:
                 response = self._generate_response(res_class)
         return response
 

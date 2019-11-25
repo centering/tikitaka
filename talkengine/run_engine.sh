@@ -13,9 +13,9 @@ echo "** Prepare scenario dataset"
 python prepare_data.py -root_path=./resource/ -input_path=./resource/pre_analysis.tsv
 
 echo "** Run slackbot server"
-nohup python run_slackbot.py &
+nohup python run_slackbot.py -thres_prob=0.9 &
 
 echo "** Run telegrambot server"
-nohup python run_telegrambot.py &
+nohup python run_telegrambot.py -thres_prob=0.9 &
 
 exit
