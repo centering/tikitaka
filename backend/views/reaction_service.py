@@ -64,10 +64,11 @@ class ReactionService(Resource):
     def get(self):          #R
         args = reaction_get_parser.parse_args()
         result = ReactionDao.get_reaction_list(args['reaction_group_id'])
-        each_reaction['reaction_type'] = []
-        each_reaction['reaction_response'] = []
-
+        
         for each_reaction in result:
+            each_reaction['reaction_type'] = []
+            each_reaction['reaction_response'] = []
+
             each_reaction['reaction_type'] += ReactionDao.get_reaction_type(each_reaction['id'])
             each_reaction['reaction_response'] += ReactionDao.get_reaction_response(each_reaction['id'])
 
