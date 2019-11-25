@@ -26,7 +26,7 @@ class ReactionGroupService(Resource):
         result = ReactionGroupDao.get_reaction_group_list()
 
         for each_reaction in result:
-            each_reaction['reaction_query'] = ReactionDao.get_reaction_query(each_reaction['id'])
+            each_reaction['reaction_type'] = ReactionDao.get_reaction_type(each_reaction['id'])
             each_reaction['reaction_response'] = ReactionDao.get_reaction_response(each_reaction['id'])
 
         return {'code':'ok', 'data': result}
@@ -46,7 +46,7 @@ reaction_create_proto = reaction_ns.model("reaction_create_proto", {
 
 reaction_update_proto = reaction_ns.model("reaction_update_proto", {
     "reaction_id":          fields.Integer("reaction id"),
-    "reaction_query":       fields.Raw("reaction queries"),
+    "reaction_type":       fields.Raw("reaction type"),
     "reaction_response":    fields.Raw("reaction responses")
 })
 
@@ -76,7 +76,7 @@ class ReactionService(Resource):
     @api.expect(reaction_update_proto)
     def put(self):         #U
         args = request.json
-        reaction_id = ReactionDao.update_reaction(args['reaction_id'], args['reaction_query'], args['reaction_response'])
+        reaction_id = ReactionDao.update_reaction(args['reaction_id'], args['reaction_type'], args['reaction_response'])
 
         return {'code':'ok', 'message': 'successed reaction update'}
 
