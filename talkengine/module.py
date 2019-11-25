@@ -49,18 +49,18 @@ class SmalltalkEngine(AbstractConvEngine):
     def predict(self, text: str):
         query = {'query': text}
         # 1) slang detection
-        response = requests.post(self.slangmodel_endpoint_path, json=query).json()
-        response = response['result'][0]
-        s_match = response['type']
-        prob = response['score']
+        #response = requests.post(self.slangmodel_endpoint_path, json=query).json()
+        #response = response['result'][0]
+        #s_match = response['type']
+        #prob = response['score']
 
-        if s_match == 1:
-            response = self._generate_slang_response(prob)
+        #if s_match == 1:
+        #    response = self._generate_slang_response(prob)
         # 2) Conversation model
-        elif s_match == 0:
-            query = {'query': text}
-            response = requests.post(self.talkmodel_endpoint_path, json=query).json()
-            response = response['answer'][0]
+        #elif s_match == 0:
+        query = {'query': text}
+        response = requests.post(self.talkmodel_endpoint_path, json=query).json()
+        response = response['answer'][0]
 
         # 3) Post processing
         if response == '' and len(text) <= 5:
