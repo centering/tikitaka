@@ -25,6 +25,16 @@ parser.add_argument('-ques_embeded_dict',
                     default='./resource/ques_embed_dict.pkl',
                     help='question-embedding dictionary path')
 
+parser.add_argument('-k',
+                    type=int,
+                    default=3,
+                    help='top k hyperparameter')
+
+parser.add_argument('-thres_prob',
+                    type=float,
+                    default=0.9,
+                    help='max probability threshold')
+
 args = parser.parse_args()
 
 with open(args.ques_embeded_dict, 'rb') as file:
@@ -37,7 +47,8 @@ with open(args.res_cluster_dict, 'rb') as file:
 scenario_engine = ScenarioAnalysisEngine(input_embedding_endpoint=config.Retrieval_Encoder.endpoint,
                                          ques_embedding_dict=ques_embedded_dict,
                                          response_cluster_dict=res_cluster_dict,
-                                         k=3)
+                                         k=args.k,
+                                         thres_prob=args.thres_prob)
 
 smalltalk_engine_wean = SmalltalkEngine(slangmodel_endpoint_path=config.Slang.endpoint,
                                         talkmodel_endpoint_path=config.WEAN.endpoint)
