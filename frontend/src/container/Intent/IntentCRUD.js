@@ -1,4 +1,5 @@
-import { ScenarioActions } from '../../store/actionCreator';
+import { IntentActions } from '../../store/actionCreator';
+
 import { setLoading, setNotiboxOpt, setActionStatus } from '../../lib/common';
 import { createScenarioGroup, createScenario } from '../../lib/api/post';
 import { reviseScenario } from '../../lib/api/put';

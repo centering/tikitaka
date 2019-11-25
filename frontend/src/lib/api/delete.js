@@ -47,3 +47,28 @@ export function deleteAnswer(id) {
             return 'ng';
         });
 }
+
+export function deleteIntent(id) {
+    return axios
+        .delete(`/api/v1/intent/?id=${id}`)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+
+export function deleteEntity(id) {
+    return axios
+        .delete(`/api/v1/entity/?id=${id}`)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+
