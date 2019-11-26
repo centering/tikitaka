@@ -9,7 +9,13 @@ import pickle
 import argparse
 import os
 
-from config import ModelConfig as config
+
+import eeyore
+from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
+
+retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
+inferencer = RetrievalDialogInferencer(retrieval_args)
+inferencer.load_model()
 
 parser = argparse.ArgumentParser()
 
@@ -27,11 +33,7 @@ args = parser.parse_args()
 
 
 def construct_ques_embed_dict(querys: list, cateogry: list):
-    url = config.Retrieval_Encoder.endpoint
-
-    query = {'query': querys}
-    response = requests.post(url, json=query).json()
-    vectors = response['vectors']
+    vectors = inferencer.infer(querys)
     vectors = np.array(vectors).astype(np.float32)
 
     out_dict = {}

@@ -5,6 +5,7 @@ import DeleteIcon from '@material-ui/icons/Clear';
 import SaveIcon from '@material-ui/icons/Save';
 import Grid from '@material-ui/core/Grid';
 import Creatable from 'react-select/creatable';
+import MixMatch from '../MixMatch/MixMatch';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -109,6 +110,7 @@ const ShowAnswer = ({ scenario, deleteScenario, reviseScenario }) => {
                     <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => deleteScenario(scenario.id)} />
                 </span>
             </h2>
+
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     사용자가 이런 말을 하면
@@ -196,11 +198,14 @@ const ShowScenario = ({ scenario, deleteScenario, reviseScenario }) => {
         <Paper className={classes.root}>
             <h2>
                 {query.length !== 0 ? `#${query[0].label}` : '시나리오 이름을 붙여주세요'}
+
                 <span style={{ float: 'right' }}>
                     <SaveIcon style={{ cursor: 'pointer' }} onClick={saveScenario} />
                     <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => deleteScenario(scenario.id)} />
                 </span>
             </h2>
+            <MixMatch set1={query} set2={res} />
+
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     사용자가 이런 말을 하면
