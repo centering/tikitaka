@@ -8,6 +8,7 @@ const AddIntent = ({ createIntent, envVar }) => {
                 onClick={() => createIntent()}
                 variant="contained"
                 color="primary"
+                
             >
                 Create intent
             </Button>

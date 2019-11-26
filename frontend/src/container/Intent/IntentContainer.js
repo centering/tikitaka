@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import IntentPage from '../../pages/Intent/IntentPage';
-import { ScenarioActions } from '../../store/actionCreator';
+import { IntentActions } from '../../store/actionCreator';
 
 import * as IntentCRUD from './IntentCRUD';
 
 class IntentContainer extends Component {
     componentDidMount() {
-        IntentCRUD.GetScenarioGroup();
+        IntentCRUD.GetIntentList();
     }
 
     componentDidUpdate(prevProps) {
@@ -18,13 +18,14 @@ class IntentContainer extends Component {
     }
 
     setEnvVar(value) {
-        ScenarioActions.set_env_var(value);
+        IntentActions.set_env_var(value);
     }
 
     render() {
-        const { scenario, scenario_group, env_var } = this.props;
+        const { intent, intent_list, env_var } = this.props;
         return (
             <div>
+                <IntentPage />
             </div>
         );
     }

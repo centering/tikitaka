@@ -23,6 +23,7 @@ def getConnection():
 def sql_execute(sql, return_id=False):
     conn = getConnection()
     curs = conn.cursor(pymysql.cursors.DictCursor)
+
     curs.execute(sql)
 
     id = curs.lastrowid

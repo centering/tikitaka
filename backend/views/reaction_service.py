@@ -65,6 +65,8 @@ class ReactionService(Resource):
         args = reaction_get_parser.parse_args()
         result = ReactionDao.get_reaction_list(args['reaction_group_id'])
         
+
+        
         for each_reaction in result:
             each_reaction['reaction_type'] = []
             each_reaction['reaction_response'] = []

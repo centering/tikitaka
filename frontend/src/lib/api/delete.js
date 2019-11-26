@@ -48,6 +48,18 @@ export function deleteAnswer(id) {
         });
 }
 
+export function deleteIntents() {
+    return axios
+        .delete(`/api/v1/intent/`)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+
 export function deleteIntent(id) {
     return axios
         .delete(`/api/v1/intent/?id=${id}`)

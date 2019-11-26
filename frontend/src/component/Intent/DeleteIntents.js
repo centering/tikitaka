@@ -8,7 +8,7 @@ const DeleteIntents = ({ deleteIntents, envVar }) => {
             <Button
                 onClick={() => deleteIntents()}
                 variant="contained"
-                color="primary"
+                color="secondary"
                 startIcon={<DeleteIcon />}
             >
                 Delete intents
