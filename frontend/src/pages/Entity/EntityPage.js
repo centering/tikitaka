@@ -1,56 +1,49 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import MaterialTable from 'material-table'
 
 import AddEntity from '../../component/Entity/AddEntity';
 import DeleteEntities from '../../component/Entity/DeleteEntities';
 import ExportEntities from '../../component/Entity/ExportEntities';
 import ImportEntities from '../../component/Entity/ImportEntities';
 
-const EntityPage = ({
-    scenarioGroup,
-    setEnvVar,
-    envVar,
-    scenario,
-    createScenario,
-    createScenarioGroup,
-    reviseScenario,
-    deleteScenario,
-    deleteScenarioGroup,
-}) => {
-    return (
-        <div>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    {scenarioGroup && (
-                        <GroupList
-                            groupName="scenario_group"
-                            Group={scenarioGroup}
-                            envVar={envVar}
-                            setEnvVar={setEnvVar}
-                            deleteGroup={deleteScenarioGroup}
-                        />
-                    )}
-                    <GroupCreate createGroup={createScenarioGroup} />
-                </Grid>
-                <Grid item xs={12}>
-                    {scenario && <ScenarioList scenario={scenario} deleteScenario={deleteScenario} reviseScenario={reviseScenario} />}
-                </Grid>
+const useStyles = makeStyles(theme => ({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+  }));
 
+const EntityPage = ({
+}) => {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <div style={{ top: 0, position: 'sticky' }}>
-                        <AddEntity createScenario={createScenario} envVar={envVar} />
-                    </div>
-                    <div style={{ top: 0, position: 'sticky' }}>
-                        <ImportEntities createScenario={createScenario} envVar={envVar} />
-                    </div>
-                    <div style={{ top: 0, position: 'sticky' }}>
-                        <ExportEntities createScenario={createScenario} envVar={envVar} />
-                    </div>
-                    <div style={{ top: 0, position: 'sticky' }}>
-                        <DeleteEntities createScenario={createScenario} envVar={envVar} />
-                    </div>
+                    <AddEntity />
+                    <ImportEntities  />
+                    <ExportEntities  />
+                    <DeleteEntities  />
                 </Grid>
             </Grid>
+            <MaterialTable
+                title="Entity List"
+                columns={[
+                    {title: 'Entity', filed: 'name'},
+                    {title: 'Value', filed: 'value'},
+                    {title: 'Synonyms', filed: 'synonym'},
+                ]}
+                data = {[]}
+                options={[
+                    sorting: true
+                ]}
+            />
         </div>
     );
 };
