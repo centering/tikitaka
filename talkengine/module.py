@@ -3,7 +3,6 @@
 # Ownership: Piglet team, AI Center, SK Telecom
 
 import random
-import requests
 import faiss
 import math
 import numpy as np
