@@ -3,14 +3,20 @@
 # Ownership: Piglet team, AI Center, SK Telecom
 
 import random
-import requests
 import faiss
 import math
 import numpy as np
 
 from faiss import normalize_L2
 from collections import Counter
-from abstract import AbstractConvEngine
+from .abstract import AbstractConvEngine
+
+import eeyore
+from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
+from eeyore.models.smalltalk.WEAN import SmalltalkWEANInferencer
+
+retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
+wean_args = eeyore.model_config.smalltalk.WEAN
 
 
 class ConversationEngine(AbstractConvEngine):
@@ -33,9 +39,7 @@ class ConversationEngine(AbstractConvEngine):
 
 
 class SmalltalkEngine(AbstractConvEngine):
-    def __init__(self,
-                 slangmodel_endpoint_path: str,
-                 talkmodel_endpoint_path: str):
+    def __init__(self):
         super().__init__()
 
         # future work: DB connection
@@ -43,24 +47,11 @@ class SmalltalkEngine(AbstractConvEngine):
         self.cant_responses = [r"죄송합니다. 이해하지 못했어요 ㅠㅠ", r'잘 못들었지 말입니다??', r'무슨 말씀이신지 이해하지 못했습니다.']
         self.cant_responses_short = [r'좀 더 길게 말씀해주세요~~', r'말씀이 너무 짧으셔서 이해를 못했습니다 ㅜㅜ']
 
-        self.talkmodel_endpoint_path = talkmodel_endpoint_path
-        self.slangmodel_endpoint_path = slangmodel_endpoint_path
+        self.inferencer = SmalltalkWEANInferencer(wean_args)
+        self.inferencer.load_model()
 
     def predict(self, text: str):
-        query = {'query': text}
-        # 1) slang detection
-        response = requests.post(self.slangmodel_endpoint_path, json=query).json()
-        response = response['result'][0]
-        s_match = response['type']
-        prob = response['score']
-
-        if s_match == 1:
-            response = self._generate_slang_response(prob)
-        # 2) Conversation model
-        elif s_match == 0:
-            query = {'query': text}
-            response = requests.post(self.talkmodel_endpoint_path, json=query).json()
-            response = response['answer'][0]
+        response = self.inferencer.infer(text)[0]
 
         # 3) Post processing
         if response == '' and len(text) <= 5:
@@ -83,13 +74,14 @@ class SmalltalkEngine(AbstractConvEngine):
 
 class ScenarioAnalysisEngine(AbstractConvEngine):
     def __init__(self,
-                 input_embedding_endpoint: str,
                  ques_embedding_dict: dict,
                  response_cluster_dict: dict,
                  k: int,
                  thres_prob: float):
 
-        self.input_embedding_endpoint = input_embedding_endpoint
+        self.inferencer = RetrievalDialogInferencer(retrieval_args)
+        self.inferencer.load_model()
+
         self.ques_embedding_dict = ques_embedding_dict
         self.response_cluster_dict = response_cluster_dict
         self.k = k
@@ -107,9 +99,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
         # 2) similarity analysis
         else:
-            query = {'query': text}
-            res = requests.post(self.input_embedding_endpoint, json=query).json()
-            query_vec = np.array(res['vectors']).astype(np.float32)
+            query_vec = self.inferencer.infer(text)
+            query_vec = np.array(query_vec).astype(np.float32)
             normalize_L2(query_vec)
 
             D, I = self.faiss_index.search(query_vec, self.k)

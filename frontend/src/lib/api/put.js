@@ -35,3 +35,27 @@ export function reviseSetting(info) {
             return 'ng';
         });
 }
+
+export function reviseIntent(info) {
+    return axios
+        .put('/api/v1/intent/', info)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+
+export function reviseEntity(info) {
+    return axios
+        .put('/api/v1/Entity/', info)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}

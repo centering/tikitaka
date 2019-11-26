@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, make_response
 
 from flask_jwt_extended import JWTManager
+from flask import request
 
 from views.api import api_v1, api, blacklist
 from views import reaction_service
@@ -14,7 +15,34 @@ import argparse
 import datetime
 import logging
 import json
+import pickle
+import os
+import sys
 
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
+
+#1) Load TalkEngine
+with open('../talkengine/resource/ques_embed_dict.pkl', 'rb') as file:
+    ques_embedded_dict = pickle.load(file)
+
+with open('../talkengine/resource/res_cluster_dict.pkl', 'rb') as file:
+    res_cluster_dict = pickle.load(file)
+
+# hyperparameter
+thres_prob = 0.9
+
+scenario_engine = ScenarioAnalysisEngine(ques_embedding_dict=ques_embedded_dict,
+                                         response_cluster_dict=res_cluster_dict,
+                                         k=3,
+                                         thres_prob=thres_prob)
+
+smalltalk_engine= SmalltalkEngine()
+
+engine = ConversationEngine(scenario_model=scenario_engine,
+                            smalltalk_model=smalltalk_engine)
 
 app = Flask('tikitaka', static_url_path='', static_folder='../frontend/public', template_folder='../frontend/public')
 
@@ -101,8 +129,24 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
 
+
+@app.route('/tikitaka_infer', methods=['POST'])
+def tikitaka_infer():
+    query = request.json['query']
+    if query.__class__ != str:
+        raise ValueError("input type should be a string")
+
+    response = engine.predict(query)
+    output = {'response': response}
+
+    # 한글유니코드로 깨짐 방지
+    json_result = json.dumps(output, ensure_ascii=False)
+    res = make_response(json_result)
+    return res
+
+
 if __name__ == '__main__':
-    port = 8000
+    port = 8080
 
     logger.info('Piglet Service Start! 0.0.0.0:{}'.format(port))
     app.run(host='0.0.0.0', debug=True, port=port, threaded=True)
