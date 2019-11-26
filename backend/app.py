@@ -146,7 +146,7 @@ def tikitaka_infer():
 
 
 if __name__ == '__main__':
-    port = 8000
+    port = 8080
 
     logger.info('Piglet Service Start! 0.0.0.0:{}'.format(port))
     app.run(host='0.0.0.0', debug=True, port=port, threaded=True)
