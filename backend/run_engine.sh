@@ -4,7 +4,7 @@
 PID=$(ps -ef | grep app.py |grep -v grep |awk '{print $2}')
 
 if [[ "$PID" ]]; then
-	echo "** Killing running bot program"
+	echo "** Killing running server"
 	kill -9 $PID
 fi
 
