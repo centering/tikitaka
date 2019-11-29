@@ -41,9 +41,9 @@ const EntityPage = ({
                     {title: 'Synonyms', filed: 'synonym'},
                 ]}
                 data = {[]}
-                options={[
+                options={{
                     sorting: true
-                ]}
+                }}
             />
         </div>
     );

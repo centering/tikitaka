@@ -33,6 +33,18 @@ const IntentPage = ({
                     <DeleteIntents  />
                 </Grid>
             </Grid>
+            <MaterialTable
+                title="Intent List"
+                columns={[
+                    {title: 'Intent', filed: 'name'},
+                    {title: 'examples', filed: 'utterance_count'},
+                    
+                ]}
+                data = {[]}
+                options={{
+                    sorting: true
+                }}
+            />
         </div>
     );
 };

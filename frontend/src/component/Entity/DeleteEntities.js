@@ -8,7 +8,7 @@ const DeleteEntities = ({ deleteEntities, envVar }) => {
             <Button
                 onClick={() => deleteEntities({ scenario_group_id: envVar.get('selected_scenario_group_id') })}
                 variant="contained"
-                color="primary"
+                color="secondary"
                 startIcon={<DeleteIcon />}
             >
                 Delete entities
