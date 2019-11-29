@@ -6,6 +6,7 @@ from flask import request
 from views.api import api_v1, api, blacklist
 from views import reaction_service
 from views import scenario_service
+from views import chat_service
 
 from logging.handlers import TimedRotatingFileHandler
 
