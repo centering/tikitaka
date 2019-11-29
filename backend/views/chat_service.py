@@ -4,28 +4,33 @@ from flask_jwt_extended import jwt_required
 
 from views.api import api, chat_ns
 from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
+from talkengine.data_util import DataController, DB_connection_info
 
 import pickle
 import json
+import os
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-#1) Load TalkEngine
-with open('../talkengine/resource/ques_embed_dict.pkl', 'rb') as file:
-    ques_embedded_dict = pickle.load(file)
 
-with open('../talkengine/resource/res_cluster_dict.pkl', 'rb') as file:
-    res_cluster_dict = pickle.load(file)
+import eeyore
+from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
+
+retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
+inferencer = RetrievalDialogInferencer(retrieval_args)
+inferencer.load_model()
 
 # hyperparameter
 thres_prob = 0.9
+data_controller = DataController(DB_connection_info, inferencer)
 
-scenario_engine = ScenarioAnalysisEngine(ques_embedding_dict=ques_embedded_dict,
-                                         response_cluster_dict=res_cluster_dict,
+scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
                                          k=3,
                                          thres_prob=thres_prob)
 
 smalltalk_engine= SmalltalkEngine()
 
-engine = ConversationEngine(scenario_model=scenario_engine, smalltalk_model=smalltalk_engine)
+engine = ConversationEngine(scenario_model=scenario_engine,
+                            smalltalk_model=smalltalk_engine)
 
 chat_proto = chat_ns.model("chat_proto", {
     "query": fields.String("intent name")

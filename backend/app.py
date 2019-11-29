@@ -24,19 +24,27 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
+from talkengine.data_util import DataController, DB_connection_info
+
+import eeyore
+from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
+retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
+
+inferencer = RetrievalDialogInferencer(retrieval_args)
+inferencer.load_model()
 
 #1) Load TalkEngine
-with open('../talkengine/resource/ques_embed_dict.pkl', 'rb') as file:
-    ques_embedded_dict = pickle.load(file)
+#with open('../talkengine/resource/ques_embed_dict.pkl', 'rb') as file:
+#    ques_embedded_dict = pickle.load(file)
 
-with open('../talkengine/resource/res_cluster_dict.pkl', 'rb') as file:
-    res_cluster_dict = pickle.load(file)
+#with open('../talkengine/resource/res_cluster_dict.pkl', 'rb') as file:
+#    res_cluster_dict = pickle.load(file)
 
 # hyperparameter
 thres_prob = 0.9
+data_controller = DataController(DB_connection_info, inferencer)
 
-scenario_engine = ScenarioAnalysisEngine(ques_embedding_dict=ques_embedded_dict,
-                                         response_cluster_dict=res_cluster_dict,
+scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
                                          k=3,
                                          thres_prob=thres_prob)
 

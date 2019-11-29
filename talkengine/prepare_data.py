@@ -3,12 +3,10 @@
 # Ownership: Piglet team, AI Center, SK Telecom
 
 import pandas as pd
-import requests
 import numpy as np
 import pickle
 import argparse
 import os
-
 
 import eeyore
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
@@ -53,7 +51,6 @@ def construct_res_cluster_dict(responses: list, category: list):
 
     for key in output.keys():
         output[key] = list(set(output[key]))
-
     return output
 
 
