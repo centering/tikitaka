@@ -76,9 +76,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
     def __init__(self,
                  data_controller,
                  k: int,
-                 thres_prob: float,
-                 ques_embedding_dict=None,
-                 response_cluster_dict=None):
+                 thres_prob: float):
 
         self.inferencer = RetrievalDialogInferencer(retrieval_args)
         self.inferencer.load_model()
@@ -86,6 +84,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         self.data_controller = data_controller
         self.ques_embedding_dict = data_controller.query_embedding_dict
         self.response_cluster_dict = data_controller.response_cluster_dict
+
         self.k = k
         self.thres_prob = thres_prob
 
@@ -93,7 +92,14 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
     def predict(self, text):
         response = None
-        self.ques_embedding_dict, self.response_cluster_dict = self.data_controller.update()
+        ques_embedding_dict, response_cluster_dict = self.data_controller.update()
+
+        if self.ques_embedding_dict != ques_embedding_dict:
+            self.ques_embedding_dict = ques_embedding_dict
+            self.faiss_index, self.class_list = self._faiss_indexing()
+
+        if self.response_cluster_dict != response_cluster_dict:
+            self.response_cluster_dict = response_cluster_dict
 
         # 1) exact matching
         res_class = self._exact_matching(text)
