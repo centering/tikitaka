@@ -1,17 +1,18 @@
-import { ScenarioActions } from '../../store/actionCreator';
+import { EntityActions } from '../../store/actionCreator';
+
 import { setLoading, setNotiboxOpt, setActionStatus } from '../../lib/common';
-import { createScenarioGroup, createScenario } from '../../lib/api/post';
-import { reviseScenario } from '../../lib/api/put';
-import { deleteScenario, deleteScenarioGroup } from '../../lib/api/delete';
+import { createEntity } from '../../lib/api/post';
+import { reviseEntity } from '../../lib/api/put';
+import { deleteEntities, deleteEntity } from '../../lib/api/delete';
 
-export async function GetScenarioGroup() {
+export async function GetEntityList() {
     try {
         setLoading(true);
-        const res = await ScenarioActions.get_scenario_group();
+        const res = await EntityActions.get_entity_list();
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오 그룹을 가져오지 못했습니다.',
+                message: 'can not get entity list.',
                 open: true,
             });
         }
@@ -28,50 +29,25 @@ export async function GetScenarioGroup() {
     }
 }
 
-export async function GetScenario(scenario_group_id) {
+export async function CreateEntity(info) {
     try {
         setLoading(true);
-        const res = await ScenarioActions.get_scenario(scenario_group_id);
+        const res = await createEntity(info);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오를 가져오지 못했습니다.',
-                open: true,
-            });
-        }
-        setActionStatus('');
-        setLoading(false);
-    } catch (e) {
-        setLoading(false);
-
-        setNotiboxOpt({
-            variant: 'error',
-            message: e,
-            open: true,
-        });
-    }
-}
-
-export async function CreateScenarioGroup(info) {
-    try {
-        setLoading(true);
-        const res = await createScenarioGroup(info);
-
-        if (res.code !== 'ok') {
-            setNotiboxOpt({
-                variant: 'error',
-                message: '시나리오 그룹을 생성하지 못했습니다.',
+                message: 'can not create entity.',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오 그룹을 생성하였습니다.',
+                message: 'success to create entity.',
                 open: true,
             });
         }
-        setActionStatus('NEED_UPDATE_SCENARIO_GROUP');
+        setActionStatus('NEED_UPDATE_ENTITY');
         setLoading(false);
     } catch (e) {
         setLoading(false);
@@ -84,26 +60,25 @@ export async function CreateScenarioGroup(info) {
     }
 }
 
-export async function CreateScenario(id) {
+export async function ReviseEntity(info) {
     try {
         setLoading(true);
-        const res = await createScenario(id);
+        const res = await reviseEntity(info);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오를 생성하지 못했습니다.',
+                message: 'can not revise entity.',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오를 생성하였습니다.',
+                message: 'success to revise entity.',
                 open: true,
             });
         }
-        setActionStatus('NEED_UPDATE_SCENARIO');
-
+        setActionStatus('NEED_UPDATE_ETITY');
         setLoading(false);
     } catch (e) {
         setLoading(false);
@@ -116,25 +91,25 @@ export async function CreateScenario(id) {
     }
 }
 
-export async function ReviseScenario(info) {
+export async function DeleteEntity(id) {
     try {
         setLoading(true);
-        const res = await reviseScenario(info);
+        const res = await DeleteEntity(id);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오를 수정하지 못했습니다.',
+                message: 'can not delete entity.',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오를 수정 하였습니다.',
+                message: 'success to delete entity.',
                 open: true,
             });
         }
-        setActionStatus('NEED_UPDATE_SCENARIO');
+        setActionStatus('NEED_UPDATE_ENTITY');
         setLoading(false);
     } catch (e) {
         setLoading(false);
@@ -147,65 +122,3 @@ export async function ReviseScenario(info) {
     }
 }
 
-export async function DeleteScenario(id) {
-    try {
-        setLoading(true);
-        const res = await deleteScenario(id);
-
-        if (res.code !== 'ok') {
-            setNotiboxOpt({
-                variant: 'error',
-                message: '시나리오를 삭제하지 못했습니다.',
-                open: true,
-            });
-        } else {
-            setNotiboxOpt({
-                variant: 'success',
-                message: '시나리오를 삭제 하였습니다.',
-                open: true,
-            });
-        }
-        setActionStatus('NEED_UPDATE_SCENARIO');
-        setLoading(false);
-    } catch (e) {
-        setLoading(false);
-
-        setNotiboxOpt({
-            variant: 'error',
-            message: e,
-            open: true,
-        });
-    }
-}
-
-export async function DeleteScenarioGroup(id) {
-    try {
-        setLoading(true);
-        const res = await deleteScenarioGroup(id);
-
-        if (res.code !== 'ok') {
-            setNotiboxOpt({
-                variant: 'error',
-                message: '시나리오 그룹을 삭제하지 못했습니다.',
-                open: true,
-            });
-        } else {
-            setNotiboxOpt({
-                variant: 'success',
-                message: '시나리오 그룹을 삭제 하였습니다.',
-                open: true,
-            });
-        }
-
-        setActionStatus('NEED_UPDATE_SCENARIO_GROUP');
-        setLoading(false);
-    } catch (e) {
-        setLoading(false);
-
-        setNotiboxOpt({
-            variant: 'error',
-            message: e,
-            open: true,
-        });
-    }
-}

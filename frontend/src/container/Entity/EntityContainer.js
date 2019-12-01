@@ -9,7 +9,7 @@ import * as EntityCRUD from './EntityCRUD';
 
 class EntityContainer extends Component {
     componentDidMount() {
-        EntityCRUD.GetScenarioGroup();
+        EntityCRUD.GetEntityList();
     }
 
     componentDidUpdate(prevProps) {
@@ -22,17 +22,15 @@ class EntityContainer extends Component {
     }
 
     render() {
-        const { entity, entity_list, env_var } = this.props;
+        const { entity_list, env_var } = this.props;
         return (
             <div>
-                <EntityPage
-                    
-                />
+                <EntityPage />
             </div>
         );
     }
 }
 
-export default connect(({ common, scenario }) => ({
+export default connect(({ common, entity_list }) => ({
     
 }))(EntityContainer);

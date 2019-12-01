@@ -22,7 +22,7 @@ class IntentContainer extends Component {
     }
 
     render() {
-        const { intent, intent_list, env_var } = this.props;
+        const { intent_list, env_var } = this.props;
         return (
             <div>
                 <IntentPage />
@@ -31,6 +31,6 @@ class IntentContainer extends Component {
     }
 }
 
-export default connect(({ common, scenario }) => ({
+export default connect(({ common, intent_list }) => ({
     
 }))(IntentContainer);
