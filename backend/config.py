@@ -6,7 +6,7 @@ class Inference_connection_info:
     port = 8000
 
 class DB_connection_info:
-    host = '52.141.6.60'
+    host = '52.141.21.117'
     port = 3306
     user = 'root'
     passwd = 'piglet'
