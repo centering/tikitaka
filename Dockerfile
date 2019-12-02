@@ -17,6 +17,10 @@ RUN pip3 install -r talkengine/requirements.txt
 RUN pip3 install -r requirements.txt
 RUN pip3 install eeyore-0.3-py3-none-any.whl
 
+WORKDIR /app/frontend
+RUN npm install
+RUN npm run build
+
 WORKDIR /app/backend
 EXPOSE 8080
 

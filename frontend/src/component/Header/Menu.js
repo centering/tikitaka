@@ -2,14 +2,16 @@ import React from 'react';
 
 import { Link, withRouter } from 'react-router-dom';
 
+import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-
 import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 import BuildIcon from '@material-ui/icons/Build';
+import ChatIcon from '@material-ui/icons/Chat';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import ListIcon from '@material-ui/icons/List';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
@@ -17,6 +19,7 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 const MyMenu = () => {
     return (
         <>
+            <ListSubheader>Small Talk</ListSubheader>
             <ListItem component={Link} to="/Scenario" button>
                 <ListItemIcon>
                     <DashboardIcon />
@@ -40,11 +43,14 @@ const MyMenu = () => {
 
             <ListItem component={Link} to="/Chat" button>
                 <ListItemIcon>
-                    <BuildIcon />
+                    <ChatIcon />
                 </ListItemIcon>
                 <ListItemText primary="대화하기" />
             </ListItem>
 
+            <Divider />
+            
+            <ListSubheader>Dialog Assistant</ListSubheader>
             <ListItem component={Link} to="/Intent" button>
                 <ListItemIcon>
                     <AnnouncementIcon />

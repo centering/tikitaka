@@ -11,7 +11,6 @@ import json
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-
 import eeyore
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
 
@@ -45,6 +44,11 @@ class ChatService(Resource):
         query = args['query']
         if query.__class__ != str:
             raise ValueError("input type should be a string")
+
+        #add pre-analysis-set check logic
+
+
+
 
         response = engine.predict(query)
         output = {'response': response}
