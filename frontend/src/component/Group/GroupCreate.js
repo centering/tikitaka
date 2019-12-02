@@ -54,7 +54,7 @@ const GroupCreate = ({ createGroup }) => {
             >
                 <TextField
                     value={text}
-                    label="시나리오 그룹 이름"
+                    label="그룹 이름"
                     className={classes.textField}
                     autoFocus
                     margin="normal"

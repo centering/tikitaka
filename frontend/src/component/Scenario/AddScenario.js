@@ -12,7 +12,7 @@ const AddScenario = ({ createScenario, envVar, type }) => {
     return (
         <>
             <Button onClick={Create} variant="contained" color="primary">
-                시나리오 추가
+                추가
             </Button>
         </>
     );
