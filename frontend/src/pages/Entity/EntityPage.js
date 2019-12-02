@@ -3,10 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
 
-import AddEntity from '../../component/Entity/AddEntity';
-import DeleteEntities from '../../component/Entity/DeleteEntities';
-import ExportEntities from '../../component/Entity/ExportEntities';
-import ImportEntities from '../../component/Entity/ImportEntities';
+import EntityCRUDGrid from '../../component/Entity/EntityCRUDGrid';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,14 +22,9 @@ const EntityPage = ({
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <AddEntity />
-                    <ImportEntities  />
-                    <ExportEntities  />
-                    <DeleteEntities  />
-                </Grid>
-            </Grid>
+            <EntityCRUDGrid 
+
+            />
             <MaterialTable
                 title="Entity List"
                 columns={[

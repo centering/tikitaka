@@ -30,6 +30,7 @@ const IntentCRUDGrid = ({ createIntent, importIntents, exportIntents, deleteInte
                         onClick={() => createIntent()}
                         variant="contained"
                         color="primary"
+                        
                     >
                         Create intent
                     </Button>

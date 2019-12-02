@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const IntentCRUDGrid = ({ createIntent, importIntents, exportIntents, deleteIntents, envVar }) => {
+const IntentCRUDGrid = ({ createEntity, importEntities, exportEntities, deleteEntities, envVar }) => {
 
     const classes = useStyles();
 
@@ -27,38 +27,39 @@ const IntentCRUDGrid = ({ createIntent, importIntents, exportIntents, deleteInte
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Button
-                        onClick={() => createIntent()}
+                        onClick={() => createEntity()}
                         variant="contained"
                         color="primary"
+                        
                     >
-                        Create intent
+                        Create Entity
                     </Button>
 
                     <Button
-                        onClick={() => importIntents()}
+                        onClick={() => importEntities()}
                         variant="contained"
                         color="primary"
                         startIcon={<CloudUploadIcon />}
                     >
-                        Import intents
+                        Import Entities
                     </Button>
 
                     <Button
-                        onClick={() => exportIntents()}
+                        onClick={() => exportEntities()}
                         variant="contained"
                         color="primary"
                         startIcon={<CloudDownloadIcon />}
                     >
-                        Export Intents
+                        Export Entitiess
                     </Button>
 
                     <Button
-                        onClick={() => deleteIntents()}
+                        onClick={() => deleteEntities()}
                         variant="contained"
                         color="secondary"
                         startIcon={<DeleteIcon />}
                     >
-                        Delete intents
+                        Delete Entities
                     </Button>
                 </Grid>
             </Grid>

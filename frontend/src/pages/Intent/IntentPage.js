@@ -3,10 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import MaterialTable from 'material-table'
 
-import AddIntent from '../../component/Intent/AddIntent';
-import DeleteIntents from '../../component/Intent/DeleteIntents';
-import ExportIntents from '../../component/Intent/ExportIntents';
-import ImportIntents from '../../component/Intent/ImportIntents';
+import IntentCRUDGrid from '../../component/Intent/IntentCRUDGrid';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -25,14 +22,9 @@ const IntentPage = ({
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <AddIntent />
-                    <ImportIntents  />
-                    <ExportIntents  />
-                    <DeleteIntents  />
-                </Grid>
-            </Grid>
+            <IntentCRUDGrid
+
+            />
             <MaterialTable
                 title="Intent List"
                 columns={[
@@ -45,6 +37,7 @@ const IntentPage = ({
                     sorting: true
                 }}
             />
+            
         </div>
     );
 };
