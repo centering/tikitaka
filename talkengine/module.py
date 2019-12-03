@@ -136,6 +136,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         class_list = self.ques_embedding_dict['class']
 
         index = faiss.IndexFlatIP(512)
+        if len(query_vectors) == 0:
+            return None
         normalize_L2(query_vectors)
         index.add(query_vectors)
         return index, class_list
