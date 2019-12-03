@@ -34,6 +34,16 @@ class ScenarioDao:
         condition = {'scenario_id': scenario_id}
         return _get_item('SCENARIO_RESPONSE', condition)
 
+    def get_entire_scenario_query_response():
+        scenarios = _get_item('SCENARIO', condition)
+
+        for each_scenario in scenarios:
+            condition = {'scenario_id': scenario_id}
+            each_scenario['query'] = _get_item('SCENARIO_QUERY', condition)
+            each_scenario['response'] = _get_item('SCENARIO_RESPONSE', condition)
+
+        return scenarios
+
     def update_scenario(id, scenario_query=[], scenario_response=[]):
         condition = {'scenario_id': id}
         _delete_item_using_condition('SCENARIO_QUERY', condition)

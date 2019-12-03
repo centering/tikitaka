@@ -34,6 +34,10 @@ class IntentService(Resource):
     def get(self):          #R
         result = IntentDao.get_intent_list()
 
+        for each_intent in result:
+            each_intent['utterance'] = get_intent_utterance(each_intent['id'])
+            each_intent['utterance_count'] = len(each_intent['utterances'])
+
         return {'code':'ok', 'data': result}
 
     @api.expect(intent_update_proto)
