@@ -24,7 +24,7 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
-from talkengine.data_util import DataController, DB_connection_info
+from talkengine.data_util import DataController
 
 import eeyore
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
@@ -41,8 +41,8 @@ inferencer.load_model()
 #    res_cluster_dict = pickle.load(file)
 
 # hyperparameter
-thres_prob = 0.9
-data_controller = DataController(DB_connection_info, inferencer)
+thres_prob = 0.8
+data_controller = DataController(inferencer)
 
 scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
                                          k=3,

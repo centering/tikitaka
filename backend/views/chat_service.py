@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 
 from views.api import api, chat_ns
 from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
-from talkengine.data_util import DataController, DB_connection_info
+from talkengine.data_util import DataController
 
 import pickle
 import json
@@ -20,7 +20,7 @@ inferencer.load_model()
 
 # hyperparameter
 thres_prob = 0.9
-data_controller = DataController(DB_connection_info, inferencer)
+data_controller = DataController(inferencer)
 
 scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
                                          k=3,
