@@ -34,6 +34,9 @@ class EntityService(Resource):
     def get(self):          #R
         result = EntityDao.get_entity_list()
 
+        for each_entity in result:
+            each_entity['synonym'] = EntityDao.get_entity_synonym(each_entity['id'])
+            
         return {'code':'ok', 'data': result}
 
     @api.expect(entity_update_proto)
