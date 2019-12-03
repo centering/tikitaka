@@ -36,13 +36,13 @@ def test_exact_match(engine):
 
 
 def test_by_wean(engine):
-    query = "대통령 어떻게 생각해?"
+    query = "어떤 책을 좋아해?"
     response = engine.predict(query)
-    assert response in ["대통령 지지합니다."]
+    assert response in ["어제도 마지막 잎새를 읽고 울다 잠들었어요", "책은 마음의 양식이죠", "해리포터 시리즈가 명작이죠"]
 
 
 def test_short_query(engine):
-    query = "아"
+    query = "."
     response = engine.predict(query)
     assert response in [r'좀 더 길게 말씀해주세요~~', r'말씀이 너무 짧으셔서 이해를 못했습니다 ㅜㅜ']
 
