@@ -110,6 +110,10 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         else:
             query_vec = self.inferencer.infer(text)
             query_vec = np.array(query_vec).astype(np.float32)
+
+            if len(query_vec) == 0:
+                return None
+
             normalize_L2(query_vec)
 
             D, I = self.faiss_index.search(query_vec, self.k)
