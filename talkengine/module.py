@@ -21,13 +21,13 @@ wean_args = eeyore.model_config.smalltalk.WEAN
 
 class ConversationEngine(AbstractConvEngine):
     def __init__(self,
-                 scenario_model,
-                 smalltalk_model):
+                 scenario_model: AbstractConvEngine,
+                 smalltalk_model: AbstractConvEngine):
 
         self.scenario_model = scenario_model
         self.smalltalk_model = smalltalk_model
 
-    def predict(self, text):
+    def predict(self, text: str) -> str:
         # 1) scenario analysis
         response = self.scenario_model.predict(text)
 
@@ -50,26 +50,23 @@ class SmalltalkEngine(AbstractConvEngine):
         self.inferencer = SmalltalkWEANInferencer(wean_args)
         self.inferencer.load_model()
 
-    def predict(self, text: str):
+    def predict(self, text: str) -> str:
         response = self.inferencer.infer(text)[0]
 
         # 3) Post processing
-        if response == '' and len(text) <= 5:
-            response = self._generate_cant_response(is_short=True)
-        elif response == '':
-            response = self._generate_cant_response(is_short=False)
+        if not response:
+            response = self._generate_cant_response(is_short=(len(text) <= 5))
+
         return response
 
-    def _generate_slang_response(self, prob: float):
-        res = '고객님, {}%의 확률로 욕이 탐지되었습니다. '.format(min(99., prob*100))
+    def _generate_slang_response(self, prob: float) -> str:
+        res = '고객님, {}%의 확률로 욕이 탐지되었습니다. '.format(min(99., prob * 100))
         res_candidates = [res + s for s in self.slang_responses]
-        return random.sample(res_candidates, 1)[0]
+        return random.choice(res_candidates)
 
-    def _generate_cant_response(self, is_short: bool):
-        if is_short:
-            return random.sample(self.cant_responses_short, 1)[0]
-        else:
-            return random.sample(self.cant_responses, 1)[0]
+    def _generate_cant_response(self, is_short: bool) -> str:
+        responses = self.cant_responses_short if is_short else self.cant_responses
+        return random.choice(responses)
 
 
 class ScenarioAnalysisEngine(AbstractConvEngine):
@@ -90,7 +87,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
         self.faiss_index, self.class_list = self._faiss_indexing()
 
-    def predict(self, text):
+    def predict(self, text: str) -> str:
         response = None
         ques_embedding_dict, response_cluster_dict = self.data_controller.update()
 
