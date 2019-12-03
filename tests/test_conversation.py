@@ -14,10 +14,8 @@ def engine():
     inferencer.load_model()
 
     data_controller = DataController(inferencer)
-    thres_prob = 0.9
     scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
-                                             k=3,
-                                             thres_prob=thres_prob)
+                                             k=3)
 
     smalltalk_engine = SmalltalkEngine()
 
@@ -29,6 +27,12 @@ def test_hello(engine):
     query = "안녕"
     response = engine.predict(query)
     assert response in ["반가워요", "안녕하세요", "잘 지내셨나요?"]
+
+
+def test_exact_match(engine):
+    query = "감사합니다"
+    response = engine.predict(query)
+    assert response in ["도울 수 있어 기뻐요", "불러만주세요", "언제든 도움이 필요하시면 말씀하세요", "천만에요"]
 
 
 def test_by_wean(engine):
@@ -46,4 +50,6 @@ def test_short_query(engine):
 def test_unknown_query(engine):
     query = "꿻쁑쒶뗶쬁폧"
     response = engine.predict(query)
-    assert response in [r"죄송합니다. 이해하지 못했어요 ㅠㅠ", r'잘 못들었지 말입니다??', r'무슨 말씀이신지 이해하지 못했습니다.']
+    assert response in [
+        r"죄송합니다. 이해하지 못했어요 ㅠㅠ", r'잘 못들었지 말입니다??', r'무슨 말씀이신지 이해하지 못했습니다.'
+    ]

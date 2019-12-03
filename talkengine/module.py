@@ -9,7 +9,10 @@ import numpy as np
 
 from faiss import normalize_L2
 from collections import Counter
+from typing import Optional, Tuple
+
 from .abstract import AbstractConvEngine
+from .data_util import DataController
 
 import eeyore
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
@@ -71,7 +74,7 @@ class SmalltalkEngine(AbstractConvEngine):
 
 class ScenarioAnalysisEngine(AbstractConvEngine):
     def __init__(self,
-                 data_controller,
+                 data_controller: DataController,
                  k: int):
 
         self.inferencer = RetrievalDialogInferencer(retrieval_args)
@@ -88,7 +91,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         self.faiss_index, self.class_list = self._faiss_indexing()
 
     def predict(self, text: str) -> str:
-        response = None
+        response = ""
+        ques_embedding_dict, response_cluster_dict = self.data_controller.update()
 
         # update
         ques_embedding_dict, response_cluster_dict = self.data_controller.update()
@@ -112,7 +116,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
             query_vec = np.array(query_vec).astype(np.float32)
 
             if len(query_vec) == 0:
-                return None
+                return ""
 
             normalize_L2(query_vec)
 
@@ -127,24 +131,23 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
                 response = self._generate_response(res_class)
         return response
 
-    def _generate_response(self, res_class):
+    def _generate_response(self, res_class: int) -> str:
         res_candidates = self.response_cluster_dict[res_class]
-        return random.sample(res_candidates, 1)[0]
+        return random.choice(res_candidates)
 
-    def _faiss_indexing(self):
+    def _faiss_indexing(self) -> Tuple[Optional[faiss.IndexFlatIP], list]:
         query_vectors = self.ques_embedding_dict['vectors']
         class_list = self.ques_embedding_dict['class']
 
-        index = faiss.IndexFlatIP(512)
-
         if len(query_vectors) == 0:
-            return None, None
+            return None, []
 
         normalize_L2(query_vectors)
+        index = faiss.IndexFlatIP(512)
         index.add(query_vectors)
         return index, class_list
 
-    def _exact_matching(self, query: str):
+    def _exact_matching(self, query: str) -> Optional[int]:
         response_class = None
 
         query_wo_space = query.replace(" ", "")
@@ -152,8 +155,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         preset_sents = self.ques_embedding_dict['sentences']
         preset_sents_wo_space = [s.replace(" ", "") for s in preset_sents]
 
-        preset_classes = self.ques_embedding_dict['class']
-
         if query_wo_space in preset_sents_wo_space:
+            preset_classes = self.ques_embedding_dict['class']
             response_class = preset_classes[preset_sents_wo_space.index(query_wo_space)]
         return response_class
