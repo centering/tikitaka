@@ -25,12 +25,21 @@ class EntityContainer extends Component {
         const { entity_list, env_var } = this.props;
         return (
             <div>
-                <EntityPage />
+                <EntityPage 
+                    entity_list={entity_list}
+                    createEntity={EntityCRUD.CreateEntity}
+                    importEntities={EntityCRUD.ImportEntities}
+                    exportEntities={EntityCRUD.ExportEntities}
+                    deleteEntities={EntityCRUD.DeleteEntities}
+                    envVar={env_var}
+                />
             </div>
         );
     }
 }
 
-export default connect(({ common, entity_list }) => ({
-    
+export default connect(({ common, entity }) => ({
+    entity_list: entity.get('entity_list'),
+    env_var: entity.get('env_var'),
+    action_status: common.get('action_status'),
 }))(EntityContainer);

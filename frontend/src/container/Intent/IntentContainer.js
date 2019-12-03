@@ -25,12 +25,22 @@ class IntentContainer extends Component {
         const { intent_list, env_var } = this.props;
         return (
             <div>
-                <IntentPage />
+                <IntentPage 
+                    intent_list={intent_list}
+                    createIntent={IntentCRUD.CreateIntent}
+                    importIntents={IntentCRUD.ImportIntents}
+                    exportIntents={IntentCRUD.ExportIntents}
+                    deleteIntents={IntentCRUD.DeleteIntents}
+                    envVar={env_var}
+                />
             </div>
         );
     }
 }
 
-export default connect(({ common, intent_list }) => ({
-    
+export default connect(({ common, intent }) => ({
+    intent_list: intent.get('intent_list'),
+    env_var: intent.get('env_var'),
+    action_status: common.get('action_status'),
 }))(IntentContainer);
+ 

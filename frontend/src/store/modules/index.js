@@ -6,6 +6,9 @@ import scenario from './scenario';
 import answer from './answer';
 import setting from './setting';
 import chat from './chat';
+import intent from './intent';
+import entity from './entity';
+import dialog from './dialog';
 
 export default combineReducers({
     common,
@@ -13,5 +16,8 @@ export default combineReducers({
     answer,
     setting,
     chat,
+    intent,
+    entity,
+    dialog,
     pender: penderReducer,
 });

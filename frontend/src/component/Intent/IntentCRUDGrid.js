@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     paper: {
       padding: theme.spacing(2),
       textAlign: 'center',
-      color: theme.palette.text.secondary,
+      
     },
 }));
 
@@ -37,7 +37,6 @@ const IntentCRUDGrid = ({ createIntent, importIntents, exportIntents, deleteInte
                     <Button
                         onClick={() => importIntents()}
                         variant="contained"
-                        color="primary"
                         startIcon={<CloudUploadIcon />}
                     >
                         Import intents
@@ -46,7 +45,6 @@ const IntentCRUDGrid = ({ createIntent, importIntents, exportIntents, deleteInte
                     <Button
                         onClick={() => exportIntents()}
                         variant="contained"
-                        color="primary"
                         startIcon={<CloudDownloadIcon />}
                     >
                         Export Intents

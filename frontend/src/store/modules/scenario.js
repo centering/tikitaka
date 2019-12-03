@@ -52,7 +52,7 @@ export default applyPenders(reducer, [
             return new_state;
         },
         onFailure: state => {
-            return state.set('scenarioscenario', []);
+            return state.set('scenario', []);
         },
     },
 ]);

@@ -6,6 +6,7 @@ import { getScenarioGroup, GetScenario } from '../../lib/api/get';
 const GET_SCENARIO_GROUP = 'SCENARIO/GET_SCENARIO_GROUP';
 const GET_SCENARIO = 'SCENARIO/GET_SCGET_SCENARIOENARIO_GROUP';
 const SET_ENV_VAR = 'SCENARIO/SET_ENV_VAR';
+
 export const get_scenario_group = createAction(GET_SCENARIO_GROUP, getScenarioGroup);
 export const get_scenario = createAction(GET_SCENARIO, GetScenario);
 export const set_env_var = createAction(SET_ENV_VAR, value => value);

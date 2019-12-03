@@ -5,25 +5,18 @@ import MaterialTable from 'material-table'
 
 import IntentCRUDGrid from '../../component/Intent/IntentCRUDGrid';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
-  }));
-
 const IntentPage = ({
+    intent_list, createIntent, importIntents, exportIntents, deleteIntents, envVar
 }) => {
-    const classes = useStyles();
-
+    
     return (
-        <div className={classes.root}>
+        <div>
             <IntentCRUDGrid
-
+                createIntent={createIntent}
+                importIntents={importIntents}
+                exportIntents={exportIntents}
+                deleteIntents={deleteIntents}
+                envVar={envVar}
             />
             <MaterialTable
                 title="Intent List"
@@ -32,9 +25,10 @@ const IntentPage = ({
                     {title: 'examples', filed: 'utterance_count'},
                     
                 ]}
-                data = {[]}
+                data = {intent_list}
                 options={{
-                    sorting: true
+                    sorting: true,
+                    search: true
                 }}
             />
             

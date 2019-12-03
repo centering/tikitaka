@@ -12,18 +12,21 @@ const useStyles = makeStyles(theme => ({
     paper: {
       padding: theme.spacing(2),
       textAlign: 'center',
-      color: theme.palette.text.secondary,
     },
   }));
 
 const EntityPage = ({
+    entity_list, createEntity, importEntities, exportEntities, deleteEntities, envVar
 }) => {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <EntityCRUDGrid 
-
+                createEntity={createEntity}
+                importEntities={importEntities}
+                exportEntities={exportEntities}
+                deleteEntities={deleteEntities}
             />
             <MaterialTable
                 title="Entity List"
@@ -32,9 +35,10 @@ const EntityPage = ({
                     {title: 'Value', filed: 'value'},
                     {title: 'Synonyms', filed: 'synonym'},
                 ]}
-                data = {[]}
+                data = {entity_list}
                 options={{
-                    sorting: true
+                    sorting: true,
+                    search: true
                 }}
             />
         </div>

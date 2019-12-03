@@ -91,7 +91,69 @@ export async function ReviseEntity(info) {
     }
 }
 
-export async function DeleteEntity(id) {
+export async function DeleteEntities(id) {
+    try {
+        setLoading(true);
+        const res = await DeleteEntity(id);
+
+        if (res.code !== 'ok') {
+            setNotiboxOpt({
+                variant: 'error',
+                message: 'can not delete entity.',
+                open: true,
+            });
+        } else {
+            setNotiboxOpt({
+                variant: 'success',
+                message: 'success to delete entity.',
+                open: true,
+            });
+        }
+        setActionStatus('NEED_UPDATE_ENTITY');
+        setLoading(false);
+    } catch (e) {
+        setLoading(false);
+
+        setNotiboxOpt({
+            variant: 'error',
+            message: e,
+            open: true,
+        });
+    }
+}
+
+export async function ImportEntities(id) {
+    try {
+        setLoading(true);
+        const res = await DeleteEntity(id);
+
+        if (res.code !== 'ok') {
+            setNotiboxOpt({
+                variant: 'error',
+                message: 'can not delete entity.',
+                open: true,
+            });
+        } else {
+            setNotiboxOpt({
+                variant: 'success',
+                message: 'success to delete entity.',
+                open: true,
+            });
+        }
+        setActionStatus('NEED_UPDATE_ENTITY');
+        setLoading(false);
+    } catch (e) {
+        setLoading(false);
+
+        setNotiboxOpt({
+            variant: 'error',
+            message: e,
+            open: true,
+        });
+    }
+}
+
+export async function ExportEntities(id) {
     try {
         setLoading(true);
         const res = await DeleteEntity(id);

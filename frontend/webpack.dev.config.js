@@ -23,7 +23,7 @@ module.exports = {
         historyApiFallback: { disableDotRule: true },
         contentBase: path.join(__dirname, '/public'),
         proxy: {
-            '/api/v1/**': { target: 'http://localhost:8000', changeOrigin: true },
+            '/api/v1/**': { target: 'http://localhost:8080', changeOrigin: true },
         },
     },
     plugins: [

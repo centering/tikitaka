@@ -52,8 +52,8 @@ class ScenarioContainer extends Component {
 }
 
 export default connect(({ common, scenario }) => ({
-    scenario_group: scenario.get('scenario_group'),
     scenario: scenario.get('scenario'),
+    scenario_group: scenario.get('scenario_group'),
     env_var: scenario.get('env_var'),
     action_status: common.get('action_status'),
 }))(ScenarioContainer);

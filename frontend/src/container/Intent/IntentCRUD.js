@@ -91,7 +91,69 @@ export async function ReviseIntent(info) {
     }
 }
 
-export async function DeleteIntent(id) {
+export async function DeleteIntents(id) {
+    try {
+        setLoading(true);
+        const res = await deleteScenario(id);
+
+        if (res.code !== 'ok') {
+            setNotiboxOpt({
+                variant: 'error',
+                message: '시나리오를 삭제하지 못했습니다.',
+                open: true,
+            });
+        } else {
+            setNotiboxOpt({
+                variant: 'success',
+                message: '시나리오를 삭제 하였습니다.',
+                open: true,
+            });
+        }
+        setActionStatus('NEED_UPDATE_SCENARIO');
+        setLoading(false);
+    } catch (e) {
+        setLoading(false);
+
+        setNotiboxOpt({
+            variant: 'error',
+            message: e,
+            open: true,
+        });
+    }
+}
+
+export async function ImportIntents(id) {
+    try {
+        setLoading(true);
+        const res = await deleteScenario(id);
+
+        if (res.code !== 'ok') {
+            setNotiboxOpt({
+                variant: 'error',
+                message: '시나리오를 삭제하지 못했습니다.',
+                open: true,
+            });
+        } else {
+            setNotiboxOpt({
+                variant: 'success',
+                message: '시나리오를 삭제 하였습니다.',
+                open: true,
+            });
+        }
+        setActionStatus('NEED_UPDATE_SCENARIO');
+        setLoading(false);
+    } catch (e) {
+        setLoading(false);
+
+        setNotiboxOpt({
+            variant: 'error',
+            message: e,
+            open: true,
+        });
+    }
+}
+
+export async function ExportIntents(id) {
     try {
         setLoading(true);
         const res = await deleteScenario(id);

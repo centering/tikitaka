@@ -7,6 +7,7 @@ import * as settingActions from './modules/setting';
 import * as chatActions from './modules/chat';
 import * as intentActions from './modules/intent';
 import * as entityActions from './modules/entity';
+import * as dialogActions from './modules/dialog';
 
 import store from './index';
 
@@ -19,4 +20,5 @@ export const SettingActions = bindActionCreators(settingActions, dispatch);
 export const ChatActions = bindActionCreators(chatActions, dispatch);
 export const IntentActions = bindActionCreators(intentActions, dispatch);
 export const EntityActions = bindActionCreators(entityActions, dispatch);
+export const DialogActions = bindActionCreators(dialogActions, dispatch);
 

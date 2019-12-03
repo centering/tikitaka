@@ -29,15 +29,8 @@ export default applyPenders(reducer, [
     {
         type: GET_INTENT_LIST,
         onSuccess: (state, action) => {
-            let new_state = state.set('intent', action.payload.data);
-            if (action.payload.data.length !== 0 && new_state.get('env_var').get('selected_intent') === -1) {
-                new_state = new_state.set(
-                    'env_var',
-                    new_state
-                        .get('env_var')
-                        .set('intent_list', action.payload.data),
-                );
-            }
+            let new_state = state.set('intent_list', action.payload.data);
+            
             return new_state;
         },
         onFailure: state => {
@@ -47,11 +40,11 @@ export default applyPenders(reducer, [
     {
         type: GET_INTENT,
         onSuccess: (state, action) => {
-            const new_state = state.set('intent', action.payload.data);
+            const new_state = state.set('intent_list', action.payload.data);
             return new_state;
         },
         onFailure: state => {
-            return state.set('intent', []);
+            return state.set('intent_list', []);
         },
     },
 ]);

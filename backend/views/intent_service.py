@@ -35,8 +35,8 @@ class IntentService(Resource):
         result = IntentDao.get_intent_list()
 
         for each_intent in result:
-            each_intent['utterance'] = get_intent_utterance(each_intent['id'])
-            each_intent['utterance_count'] = len(each_intent['utterances'])
+            each_intent['utterance'] = IntentDao.get_intent_utterance(each_intent['id'])
+            each_intent['utterance_count'] = len(each_intent['utterance'])
 
         return {'code':'ok', 'data': result}
 
