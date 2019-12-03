@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
+import SpeakerNotesOffIcon from '@material-ui/icons/SpeakerNotesOff';
 import BuildIcon from '@material-ui/icons/Build';
 import ChatIcon from '@material-ui/icons/Chat';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
@@ -32,6 +33,13 @@ const MyMenu = () => {
                     <RecordVoiceOverIcon />
                 </ListItemIcon>
                 <ListItemText primary="자동 답변" />
+            </ListItem>
+
+            <ListItem component={Link} to="/Blacklist" button>
+                <ListItemIcon>
+                    <SpeakerNotesOffIcon />
+                </ListItemIcon>
+                <ListItemText primary="비속어" />
             </ListItem>
 
             <ListItem component={Link} to="/Setting" button>
