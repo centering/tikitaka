@@ -144,10 +144,10 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
     def _exact_matching(self, query: str):
         response_class = None
 
-        query_wo_space = ''.join(query.split(" "))
+        query_wo_space = query.replace(" ", "")
 
         preset_sents = self.ques_embedding_dict['sentences']
-        preset_sents_wo_space = [''.join(s.split(" ")) for s in preset_sents]
+        preset_sents_wo_space = [s.replace(" ", "") for s in preset_sents]
 
         preset_classes = self.ques_embedding_dict['class']
 
