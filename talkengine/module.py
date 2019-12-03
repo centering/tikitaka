@@ -72,31 +72,34 @@ class SmalltalkEngine(AbstractConvEngine):
 class ScenarioAnalysisEngine(AbstractConvEngine):
     def __init__(self,
                  data_controller,
-                 k: int,
-                 thres_prob: float):
+                 k: int):
 
         self.inferencer = RetrievalDialogInferencer(retrieval_args)
         self.inferencer.load_model()
 
         self.data_controller = data_controller
+
         self.ques_embedding_dict = data_controller.query_embedding_dict
         self.response_cluster_dict = data_controller.response_cluster_dict
+        self.thres_prob = data_controller.threshold_dict['scenario_similarity_threshold']
 
         self.k = k
-        self.thres_prob = thres_prob
 
         self.faiss_index, self.class_list = self._faiss_indexing()
 
     def predict(self, text: str) -> str:
         response = None
-        ques_embedding_dict, response_cluster_dict = self.data_controller.update()
 
+        # update
+        ques_embedding_dict, response_cluster_dict = self.data_controller.update()
         if self.ques_embedding_dict != ques_embedding_dict:
             self.ques_embedding_dict = ques_embedding_dict
             self.faiss_index, self.class_list = self._faiss_indexing()
 
         if self.response_cluster_dict != response_cluster_dict:
             self.response_cluster_dict = response_cluster_dict
+
+        self.thres_prob = self.data_controller.threshold_dict['scenario_similarity_threshold']
 
         # 1) exact matching
         res_class = self._exact_matching(text)

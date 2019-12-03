@@ -12,14 +12,19 @@ sys.path.append(root_path + '/backend')
 mod = importlib.import_module('model.scenario_dao')
 ScenarioDao = mod.ScenarioDao
 
+mod_set = importlib.import_module('model.setting_dao')
+SettingDao = mod_set.SettingDao
+
 
 class DataController:
-    def __init__(self, inferencer=None):
+    def __init__(self, inferencer):
         self.inferencer = inferencer
         self.init_setup()
 
     def init_setup(self):
         (query_class, querys), (res_class, self.responses) = self._get_query_response()
+        self.threshold_dict = self._get_threshold()
+
         self.query_embedding_dict = construct_ques_embed_dict(querys, query_class, self.inferencer)
         self.response_cluster_dict = construct_res_cluster_dict(self.responses, res_class)
         return self.query_embedding_dict, self.response_cluster_dict
@@ -29,6 +34,7 @@ class DataController:
         return query_embedding_dict, response_cluster_dict
 
     def _update_query_response(self):
+        self.threshold_dict = self._get_threshold()
         (query_class, querys), (response_class, responses) = self._get_query_response()
 
         # update query
@@ -81,6 +87,12 @@ class DataController:
             response_class.append(res['scenario_id'])
             scenario_response.append(res['text'])
         return (query_class, scenario_query), (response_class, scenario_response)
+
+    def _get_threshold(self):
+        output = {}
+        for res in SettingDao.get_setting_list():
+            output[res['name']] = res['value']
+        return output
 
 
 def construct_ques_embed_dict(querys: list, cateogry: list, inferencer):

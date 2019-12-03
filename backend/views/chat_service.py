@@ -19,12 +19,10 @@ inferencer = RetrievalDialogInferencer(retrieval_args)
 inferencer.load_model()
 
 # hyperparameter
-thres_prob = 0.9
 data_controller = DataController(inferencer)
 
 scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
-                                         k=3,
-                                         thres_prob=thres_prob)
+                                         k=3)
 
 smalltalk_engine= SmalltalkEngine()
 
