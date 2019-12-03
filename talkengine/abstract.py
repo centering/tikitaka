@@ -12,5 +12,5 @@ class AbstractConvEngine(object):
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
-    def predict(self, text):
+    def predict(self, text: str) -> str:
         pass
