@@ -34,9 +34,9 @@ class ScenarioDao:
         condition = {'scenario_id': scenario_id}
         return _get_item('SCENARIO_RESPONSE', condition)
 
-    def get_entire_scenario_query():
+    def get_entire_scenario_query_response():
         condition = {}
-        return _get_item('SCENARIO_QUERY', condition)
+        return _get_item('SCENARIO_QUERY', condition), _get_item('SCENARIO_RESPONSE', condition)
 
     def update_scenario(id, scenario_query=[], scenario_response=[]):
         condition = {'scenario_id': id}
