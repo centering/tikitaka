@@ -18,7 +18,7 @@
         "axios": "^0.18.1",
         "date-fns": "^2.0.0-beta.5",
         "immutable": "^4.0.0-rc.12",
-        "material-table": "1.48.0",
+        "material-table": "latest",
         "moment": "^2.24.0",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",

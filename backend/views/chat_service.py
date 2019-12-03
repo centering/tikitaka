@@ -42,16 +42,12 @@ class ChatService(Resource):
     def post(self):         #C
         args = request.json
         query = args['query']
+        
         if query.__class__ != str:
             raise ValueError("input type should be a string")
 
-        #add pre-analysis-set check logic
-
-
-
-
         response = engine.predict(query)
-        output = {'response': response}
+        output = {'response': response, 'code':'ok'}
 
         # 한글유니코드로 깨짐 방지
         json_result = json.dumps(output, ensure_ascii=False)

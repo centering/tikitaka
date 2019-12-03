@@ -1,11 +1,11 @@
-import { setLoading, setNotiboxOpt } from '../../lib/common';
+import { setLoading, setNotiboxOpt, setActionStatus } from '../../lib/common';
 import { doChat } from '../../lib/api/post';
 
 // eslint-disable-next-line import/prefer-default-export
-export async function updateChat(info) {
+export async function UpdateChat(info) {
     try {
         setLoading(true);
-        const res = await doChat(info);
+        const res = await doChat({query: info});
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
@@ -14,9 +14,12 @@ export async function updateChat(info) {
                 open: true,
             });
         }
-        // setActionStatus('NEED_UPDATE_ANSWER');
 
+        setActionStatus('NEED_UPDATE_CHAT');
         setLoading(false);
+
+        return res;
+
     } catch (e) {
         setLoading(false);
 

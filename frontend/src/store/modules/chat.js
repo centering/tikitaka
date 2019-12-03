@@ -10,7 +10,7 @@ export const set_env_var = createAction(SET_ENV_VAR, value => value);
 export const set_chat_data = createAction(SET_CHAT_DATA, value => value);
 
 const initialState = Map({
-    chat_data: List(['', '안녕하세요 반갑습니다~!']),
+    chat_data: List(['안녕하세요 반갑습니다~!']),
     env_var: Map({ selected_scenario_group_id: -1 }),
 });
 
@@ -25,6 +25,37 @@ const reducer = handleActions(
     },
     initialState,
 );
+
+export async function DoChat(info) {
+    try {
+        setLoading(true);
+        const res = await doChat(info);
+
+        if (res.code !== 'ok') {
+            setNotiboxOpt({
+                variant: 'error',
+                message: 'can not get response',
+                open: true,
+            });
+        } else {
+            setNotiboxOpt({
+                variant: 'success',
+                message: 'success to get response',
+                open: true,
+            });
+        }
+        setActionStatus('NEED_UPDATE_CHAT');
+        setLoading(false);
+    } catch (e) {
+        setLoading(false);
+
+        setNotiboxOpt({
+            variant: 'error',
+            message: e,
+            open: true,
+        });
+    }
+}
 
 export default applyPenders(reducer, [
     {
