@@ -6,6 +6,8 @@ import importlib
 import sys
 import os
 
+from .utils import normalize_text
+
 root_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(root_path + '/backend')
 
@@ -80,7 +82,7 @@ class DataController:
         query_class, scenario_query = [], []
         for res in query_response[0]:
             query_class.append(res['scenario_id'])
-            scenario_query.append(res['text'])
+            scenario_query.append(normalize_text(res['text']))
 
         response_class, scenario_response = [], []
         for res in query_response[1]:

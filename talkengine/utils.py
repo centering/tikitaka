@@ -2,6 +2,15 @@
 # -*- coding: utf-8 -*-
 # Ownership: Piglet team, AI Center, SK Telecom
 
+import re
+
+repeatchars_pattern = re.compile('(\w)\\1{3,}')
+
+
+def normalize_text(text: str) -> str:
+    text = repeatchars_pattern.sub('\\1' * 3, text)
+    return text
+
 
 class KeywordPatternMatcher:
     def __init__(self):

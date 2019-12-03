@@ -6,6 +6,7 @@ import random
 import faiss
 import math
 import numpy as np
+import difflib
 
 from faiss import normalize_L2
 from collections import Counter
@@ -13,6 +14,7 @@ from typing import Optional, Tuple
 
 from .abstract import AbstractConvEngine
 from .data_util import DataController
+from .utils import normalize_text
 
 import eeyore
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
@@ -31,6 +33,9 @@ class ConversationEngine(AbstractConvEngine):
         self.smalltalk_model = smalltalk_model
 
     def predict(self, text: str) -> str:
+        # 0) text normalize
+        text = normalize_text(text)
+
         # 1) scenario analysis
         response = self.scenario_model.predict(text)
 
@@ -83,6 +88,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         self.data_controller = data_controller
 
         self.ques_embedding_dict = data_controller.query_embedding_dict
+        self.querys = self.ques_embedding_dict['sentences']
         self.response_cluster_dict = data_controller.response_cluster_dict
         self.thres_prob = data_controller.threshold_dict['scenario_similarity_threshold']
 
@@ -92,12 +98,11 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
     def predict(self, text: str) -> str:
         response = ""
-        ques_embedding_dict, response_cluster_dict = self.data_controller.update()
-
         # update
         ques_embedding_dict, response_cluster_dict = self.data_controller.update()
         if self.ques_embedding_dict != ques_embedding_dict:
             self.ques_embedding_dict = ques_embedding_dict
+            self.querys = self.ques_embedding_dict['sentences']
             self.faiss_index, self.class_list = self._faiss_indexing()
 
         if self.response_cluster_dict != response_cluster_dict:
@@ -112,23 +117,29 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
         # 2) similarity analysis
         else:
-            query_vec = self.inferencer.infer(text)
-            query_vec = np.array(query_vec).astype(np.float32)
-
-            if len(query_vec) == 0:
-                return ""
-
-            normalize_L2(query_vec)
-
-            D, I = self.faiss_index.search(query_vec, self.k)
-            topk_class = [self.class_list[i] for i in I[0]]
-
-            pred_counts = Counter(topk_class)
-            res_class = max(pred_counts)
-            max_prob = D[0].max()
-
-            if pred_counts[res_class] >= math.ceil(self.k / 2) and max_prob >= self.thres_prob:
+            # a) character similarity
+            res_class = self._char_similarity_analysis(text)
+            if res_class:
                 response = self._generate_response(res_class)
+            # b) semantic similarity
+            else:
+                query_vec = self.inferencer.infer(text)
+                query_vec = np.array(query_vec).astype(np.float32)
+
+                if len(query_vec) == 0:
+                    return ""
+
+                normalize_L2(query_vec)
+
+                D, I = self.faiss_index.search(query_vec, self.k)
+                topk_class = [self.class_list[i] for i in I[0]]
+
+                pred_counts = Counter(topk_class)
+                res_class = max(pred_counts)
+                max_prob = D[0].max()
+
+                if pred_counts[res_class] >= math.ceil(self.k / 2) and max_prob >= self.thres_prob:
+                    response = self._generate_response(res_class)
         return response
 
     def _generate_response(self, res_class: int) -> str:
@@ -158,4 +169,13 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         if query_wo_space in preset_sents_wo_space:
             preset_classes = self.ques_embedding_dict['class']
             response_class = preset_classes[preset_sents_wo_space.index(query_wo_space)]
+        return response_class
+
+    def _char_similarity_analysis(self, text: str) -> Optional[int]:
+        # TBD: draw cutoff threshold from DB
+        response_class = None
+        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.5)
+        if len(out) == 1:
+            idx = self.querys.index(out[0])
+            response_class = self.ques_embedding_dict['class'][idx]
         return response_class
