@@ -34,7 +34,7 @@ def test_hello(engine):
 def test_by_wean(engine):
     query = "대통령 어떻게 생각해?"
     response = engine.predict(query)
-    assert response in ["대통령 지지합니다. "]
+    assert response in ["대통령 지지합니다."]
 
 
 def test_short_query(engine):
