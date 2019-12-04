@@ -20,6 +20,7 @@ import eeyore
 from eeyore.models.slang_filtering.Detection import SlangDetectionInferencer
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
 from eeyore.models.smalltalk.WEAN import SmalltalkWEANInferencer
+from eeyore.models.reaction_classification.TFIDFNB import TfidfNBReactionInferencer
 
 
 class ConversationEngine(AbstractConvEngine):
@@ -205,14 +206,16 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 class ReactAnalysisEngine(AbstractConvEngine):
     def __init__(self,
                  data_controller: DataController):
-        # TODO
-        # Connect reaction classification model
+        reaction_args = eeyore.model_config.reaction_classification.TFIDFNB
+        self.inferencer = TfidfNBReactionInferencer(reaction_args)
+        self.inferencer.load_model()
+
         self.data_controller = data_controller
         self.query_cluster_dict = data_controller.query_cluster_dict
         self.querys = self.query_cluster_dict['sentences']
         self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
         self.response_cluster_dict = data_controller.response_cluster_dict
-        #self.thres_prob = data_controller.threshold_dict['scenario_similarity_threshold']
+        self.thres_prob = data_controller.threshold_dict['reaction_type_threshold']
 
     def predict(self, text: str) -> str:
         response = ""
@@ -225,7 +228,7 @@ class ReactAnalysisEngine(AbstractConvEngine):
 
         if self.response_cluster_dict != response_cluster_dict:
             self.response_cluster_dict = response_cluster_dict
-        #self.thres_prob = self.data_controller.threshold_dict['scenario_similarity_threshold']
+        self.thres_prob = self.data_controller.threshold_dict['reaction_type_threshold']
 
         # 1) exact matching
         res_class = self._exact_matching(text)
@@ -233,9 +236,16 @@ class ReactAnalysisEngine(AbstractConvEngine):
             response = self._generate_response(res_class)
 
         # 2) similarity analysis
-        else:
+        if not response:
             res_class = self._char_similarity_analysis(text)
             if res_class:
+                response = self._generate_response(res_class)
+
+        # 3) Classification
+        if not response:
+            pred, prob = self.inferencer.infer([text])
+            if prob >= self.thres_prob:
+                res_class = pred[0]
                 response = self._generate_response(res_class)
         return response
 
