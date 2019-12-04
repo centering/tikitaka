@@ -17,11 +17,9 @@ from .data_util import ScenarioDataController
 from .utils import normalize_text
 
 import eeyore
+from eeyore.models.slang_filtering.Detection import SlangDetectionInferencer
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
 from eeyore.models.smalltalk.WEAN import SmalltalkWEANInferencer
-
-retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
-wean_args = eeyore.model_config.smalltalk.WEAN
 
 
 class ConversationEngine(AbstractConvEngine):
@@ -55,12 +53,23 @@ class SmalltalkEngine(AbstractConvEngine):
         self.cant_responses = [r"죄송합니다. 이해하지 못했어요 ㅠㅠ", r'잘 못들었지 말입니다??', r'무슨 말씀이신지 이해하지 못했습니다.']
         self.cant_responses_short = [r'좀 더 길게 말씀해주세요~~', r'말씀이 너무 짧으셔서 이해를 못했습니다 ㅜㅜ']
 
+        wean_args = eeyore.model_config.smalltalk.WEAN
         self.inferencer = SmalltalkWEANInferencer(wean_args)
         self.inferencer.load_model()
+
+        slang_args = eeyore.model_config.slang_filtering.Detection
+        self.slang_detector = SlangDetectionInferencer(slang_args)
+        self.slang_detector.load_model()
 
     def predict(self, text: str) -> str:
         if not text:
             return self._generate_cant_response(is_short=True)
+
+        # Filter slangs
+        responses, probs = self.slang_detector.infer(text)
+        print(responses, probs)
+        if responses[0] == 1:
+            return self._generate_slang_response(probs[0])
 
         response = self.inferencer.infer(text)[0]
 
@@ -71,7 +80,7 @@ class SmalltalkEngine(AbstractConvEngine):
         return response
 
     def _generate_slang_response(self, prob: float) -> str:
-        res = '고객님, {}%의 확률로 욕이 탐지되었습니다. '.format(min(99., prob * 100))
+        res = '고객님, {}%의 확률로 욕이 탐지되었습니다. '.format(min(prob * 100, 99.))
         res_candidates = [res + s for s in self.slang_responses]
         return random.choice(res_candidates)
 
@@ -85,6 +94,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
                  data_controller: ScenarioDataController,
                  k: int):
 
+        retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
         self.inferencer = RetrievalDialogInferencer(retrieval_args)
         self.inferencer.load_model()
 

@@ -38,7 +38,9 @@ def test_exact_match(engine):
 def test_by_wean(engine):
     query = "어떤 책을 좋아해?"
     response = engine.predict(query)
-    assert response in ["어제도 마지막 잎새를 읽고 울다 잠들었어요", "책은 마음의 양식이죠", "해리포터 시리즈가 명작이죠"]
+    assert response in [
+        "어제도 마지막 잎새를 읽고 울다 잠들었어요", "책은 마음의 양식이죠", "해리포터 시리즈가 명작이죠"
+    ]
 
 
 def test_empty_query(engine):
@@ -59,3 +61,17 @@ def test_unknown_query(engine):
     assert response in [
         r"죄송합니다. 이해하지 못했어요 ㅠㅠ", r'잘 못들었지 말입니다??', r'무슨 말씀이신지 이해하지 못했습니다.'
     ]
+
+
+def test_slang(engine):
+    slang_resps = [
+        '고객님, 99.0%의 확률로 욕이 탐지되었습니다. 바르고 고운말을 씁시다 ^^',
+        '고객님, 99.0%의 확률로 욕이 탐지되었습니다. 욕하지 말아주세요 ㅠㅠ',
+        '고객님, 99.0%의 확률로 욕이 탐지되었습니다. 욕은 정신건강에 좋지 않아요'
+    ]
+
+    response = engine.predict("씨발")
+    assert response in slang_resps
+
+    response = engine.predict("안녕")
+    assert response not in slang_resps
