@@ -34,6 +34,10 @@ class ReactionDao:
         condition = {'reaction_id': reaction_id}
         return _get_item('REACTION_RESPONSE', condition)
 
+    def get_entire_reaction_type_response():
+        condition = {}
+        return _get_item('REACTION_TYPE', condition), _get_item('REACTION_RESPONSE', condition)
+
     def update_reaction(id, reaction_type=[], reaction_response=[]):
         condition = {'reaction_id': id}
         _delete_item_using_condition('REACTION_TYPE', condition)

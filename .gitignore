@@ -3,7 +3,7 @@
 */build/*
 */**/package-lock.json
 */.DS_Store
-*/*.log
+*.log
 backend/nohup.out
 
 */*.log.*
@@ -15,3 +15,7 @@ frontend/public/*.js
 frontend/public/assets.json
 frontend/public/*.html
 .env
+
+.python-version
+.pytest_cache
+.eeyore_resources

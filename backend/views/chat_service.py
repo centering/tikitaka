@@ -3,8 +3,8 @@ from flask import Flask, render_template, jsonify, make_response, request
 from flask_jwt_extended import jwt_required
 
 from views.api import api, chat_ns
-from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
-from talkengine.data_util import DataController
+from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine, ReactAnalysisEngine
+from talkengine.data_util import ScenarioDataController, ReactionDataController
 
 import pickle
 import json
@@ -18,15 +18,17 @@ retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
 inferencer = RetrievalDialogInferencer(retrieval_args)
 inferencer.load_model()
 
-# hyperparameter
-data_controller = DataController(inferencer)
-
-scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
+scenario_data_controller = ScenarioDataController(inferencer)
+scenario_engine = ScenarioAnalysisEngine(data_controller=scenario_data_controller,
                                          k=3)
 
-smalltalk_engine= SmalltalkEngine()
+reaction_data_controller = ReactionDataController()
+reaction_engine = ReactAnalysisEngine(data_controller=reaction_data_controller)
+
+smalltalk_engine = SmalltalkEngine()
 
 engine = ConversationEngine(scenario_model=scenario_engine,
+                            reaction_model=reaction_engine,
                             smalltalk_model=smalltalk_engine)
 
 chat_proto = chat_ns.model("chat_proto", {
