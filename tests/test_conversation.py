@@ -60,7 +60,7 @@ def test_short_query(engine):
 
 
 def test_unknown_query(engine):
-    query = "!@#$%^"
+    query = "카메라도 안통해.. 약도 안통해.. 이 안에 배신자가 있다, 그게 내 결론이다"
     response = engine.predict(query)
     assert response in [
         r"죄송합니다. 이해하지 못했어요 ㅠㅠ", r'잘 못들었지 말입니다??', r'무슨 말씀이신지 이해하지 못했습니다.'
