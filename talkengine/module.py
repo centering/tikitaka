@@ -59,6 +59,9 @@ class SmalltalkEngine(AbstractConvEngine):
         self.inferencer.load_model()
 
     def predict(self, text: str) -> str:
+        if not text:
+            return self._generate_cant_response(is_short=True)
+
         response = self.inferencer.infer(text)[0]
 
         # 3) Post processing
