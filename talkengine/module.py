@@ -82,7 +82,7 @@ class SmalltalkEngine(AbstractConvEngine):
 
 class ScenarioAnalysisEngine(AbstractConvEngine):
     def __init__(self,
-                 data_controller: DataController,
+                 data_controller: ScenarioDataController,
                  k: int):
 
         self.inferencer = RetrievalDialogInferencer(retrieval_args)
