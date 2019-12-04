@@ -48,6 +48,10 @@ const ScenarioList = ({ scenario, deleteScenario, reviseScenario, type }) => {
                 scenario.map((scen, idx) => {
                     return <ShowAnswer key={idx} scenario={scen} reviseScenario={reviseScenario} deleteScenario={deleteScenario} />;
                 })}
+            {type === 'blacklist' &&
+                scenario.map((scen, idx) => {
+                    return <ShowScenario key={idx} scenario={scen} reviseScenario={reviseScenario} deleteScenario={deleteScenario} />;
+                })}
         </>
     );
 };
@@ -65,7 +69,7 @@ const ShowAnswer = ({ scenario, deleteScenario, reviseScenario }) => {
             return { label: inner_res.text, value: inner_res.text };
         }),
     );
-    // console.log(query);
+    
     useEffect(() => {
         setQuery(
             scenario.reaction_type.map(inner_qry => {

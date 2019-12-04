@@ -5,8 +5,10 @@ const AddScenario = ({ createScenario, envVar, type }) => {
     function Create() {
         if (type === 'scenario') {
             createScenario({ scenario_group_id: envVar.get('selected_scenario_group_id') });
-        } else {
+        } else if(type === 'answer') {
             createScenario({ reaction_group_id: envVar.get('selected_answer_group_id') });
+        } else if(type === 'blacklist') {
+            createScenario({ blacklist_group_id: envVar.get('selected_blacklist_group_id') });
         }
     }
     return (
