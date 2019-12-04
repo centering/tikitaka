@@ -139,24 +139,24 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
             if res_class:
                 response = self._generate_response(res_class)
             # b) semantic similarity
-            else:
-                query_vec = self.inferencer.infer(text)
-                query_vec = np.array(query_vec).astype(np.float32)
+            #else:
+            #    query_vec = self.inferencer.infer(text)
+            #    query_vec = np.array(query_vec).astype(np.float32)
 
-                if len(query_vec) == 0:
-                    return ""
+            #    if len(query_vec) == 0:
+            #        return ""
 
-                normalize_L2(query_vec)
+            #    normalize_L2(query_vec)
 
-                D, I = self.faiss_index.search(query_vec, self.k)
-                topk_class = [self.class_list[i] for i in I[0]]
+            #    D, I = self.faiss_index.search(query_vec, self.k)
+            #    topk_class = [self.class_list[i] for i in I[0]]
 
-                pred_counts = Counter(topk_class)
-                res_class = max(pred_counts)
-                max_prob = D[0].max()
+            #    pred_counts = Counter(topk_class)
+            #    res_class = max(pred_counts)
+            #    max_prob = D[0].max()
 
-                if pred_counts[res_class] >= math.ceil(self.k / 2) and max_prob >= self.thres_prob:
-                    response = self._generate_response(res_class)
+            #    if pred_counts[res_class] >= math.ceil(self.k / 2) and max_prob >= self.thres_prob:
+            #        response = self._generate_response(res_class)
         return response
 
     def _generate_response(self, res_class: int) -> str:
@@ -191,7 +191,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
     def _char_similarity_analysis(self, text: str) -> Optional[int]:
         # TBD: draw cutoff threshold from DB
         response_class = None
-        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.5)
+        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.65)
         if len(out) == 1:
             idx = self.querys.index(out[0])
             response_class = self.ques_embedding_dict['class'][idx]
@@ -253,7 +253,7 @@ class ReactAnalysisEngine(AbstractConvEngine):
     def _char_similarity_analysis(self, text: str) -> Optional[int]:
         # TBD: draw cutoff threshold from DB
         response_class = None
-        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.5)
+        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.65)
         if len(out) == 1:
             idx = self.querys.index(out[0])
             response_class = self.query_cluster_dict['class'][idx]
