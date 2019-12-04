@@ -67,7 +67,6 @@ class SmalltalkEngine(AbstractConvEngine):
 
         # Filter slangs
         responses, probs = self.slang_detector.infer(text)
-        print(responses, probs)
         if responses[0] == 1:
             return self._generate_slang_response(probs[0])
 

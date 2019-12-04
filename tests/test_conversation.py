@@ -26,20 +26,24 @@ def engine():
 def test_hello(engine):
     query = "안녕"
     response = engine.predict(query)
-    assert response in ["반가워요", "안녕하세요", "잘 지내셨나요?"]
+    assert response in ["반가워요", "안녕하세요", "안녕하세요 반갑습니다.", "잘 지내셨나요?"]
 
 
 def test_exact_match(engine):
-    query = "감사합니다"
+    query = "취미가 뭐야?"
     response = engine.predict(query)
-    assert response in ["도울 수 있어 기뻐요", "불러만주세요", "언제든 도움이 필요하시면 말씀하세요", "천만에요"]
+    assert response in [
+        '저는 독서를 하면서 마음의 양식을 쌓아요', '고객님과 대화하는 게 제 취미예요~', '킬링타임엔 역시 웨이브!',
+        '제 취미는 인터넷 쇼핑이에요'
+    ]
 
 
 def test_by_wean(engine):
     query = "어떤 책을 좋아해?"
     response = engine.predict(query)
     assert response in [
-        "어제도 마지막 잎새를 읽고 울다 잠들었어요", "책은 마음의 양식이죠", "해리포터 시리즈가 명작이죠"
+        "어제도 마지막 잎새를 읽고 울다 잠들었어요", "책은 마음의 양식이죠", "책을 읽으면 잠이 와요...",
+        "해리포터 시리즈가 명작이죠"
     ]
 
 
@@ -56,7 +60,7 @@ def test_short_query(engine):
 
 
 def test_unknown_query(engine):
-    query = "꿻쁑쒶뗶쬁폧"
+    query = "!@#$%^"
     response = engine.predict(query)
     assert response in [
         r"죄송합니다. 이해하지 못했어요 ㅠㅠ", r'잘 못들었지 말입니다??', r'무슨 말씀이신지 이해하지 못했습니다.'
