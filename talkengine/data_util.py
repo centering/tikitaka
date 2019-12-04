@@ -18,7 +18,7 @@ mod_set = importlib.import_module('model.setting_dao')
 SettingDao = mod_set.SettingDao
 
 
-class DataController:
+class ScenarioDataController:
     def __init__(self, inferencer):
         self.inferencer = inferencer
         self.init_setup()

@@ -13,7 +13,7 @@ from collections import Counter
 from typing import Optional, Tuple
 
 from .abstract import AbstractConvEngine
-from .data_util import DataController
+from .data_util import ScenarioDataController
 from .utils import normalize_text
 
 import eeyore

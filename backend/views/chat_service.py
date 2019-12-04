@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 
 from views.api import api, chat_ns
 from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
-from talkengine.data_util import DataController
+from talkengine.data_util import ScenarioDataController
 
 import pickle
 import json
@@ -19,12 +19,11 @@ inferencer = RetrievalDialogInferencer(retrieval_args)
 inferencer.load_model()
 
 # hyperparameter
-data_controller = DataController(inferencer)
-
-scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
+scenario_data_controller = ScenarioDataController(inferencer)
+scenario_engine = ScenarioAnalysisEngine(data_controller=scenario_data_controller,
                                          k=3)
 
-smalltalk_engine= SmalltalkEngine()
+smalltalk_engine = SmalltalkEngine()
 
 engine = ConversationEngine(scenario_model=scenario_engine,
                             smalltalk_model=smalltalk_engine)
