@@ -106,6 +106,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
         self.ques_embedding_dict = data_controller.query_embedding_dict
         self.querys = self.ques_embedding_dict['sentences']
+        self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
+
         self.response_cluster_dict = data_controller.response_cluster_dict
         self.thres_prob = data_controller.threshold_dict['scenario_similarity_threshold']
 
@@ -120,6 +122,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         if self.ques_embedding_dict != ques_embedding_dict:
             self.ques_embedding_dict = ques_embedding_dict
             self.querys = self.ques_embedding_dict['sentences']
+            self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
             self.faiss_index, self.class_list = self._faiss_indexing()
 
         if self.response_cluster_dict != response_cluster_dict:
@@ -191,7 +194,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
     def _char_similarity_analysis(self, text: str) -> Optional[int]:
         # TBD: draw cutoff threshold from DB
         response_class = None
-        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.65)
+        text_wo_space = text.replace(" ", "")
+        out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=0.6)
         if len(out) == 1:
             idx = self.querys.index(out[0])
             response_class = self.ques_embedding_dict['class'][idx]
@@ -206,6 +210,7 @@ class ReactAnalysisEngine(AbstractConvEngine):
         self.data_controller = data_controller
         self.query_cluster_dict = data_controller.query_cluster_dict
         self.querys = self.query_cluster_dict['sentences']
+        self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
         self.response_cluster_dict = data_controller.response_cluster_dict
         #self.thres_prob = data_controller.threshold_dict['scenario_similarity_threshold']
 
@@ -216,6 +221,7 @@ class ReactAnalysisEngine(AbstractConvEngine):
         if self.query_cluster_dict != query_cluster_dict:
             self.query_cluster_dict = query_cluster_dict
             self.querys = self.query_cluster_dict['sentences']
+            self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
 
         if self.response_cluster_dict != response_cluster_dict:
             self.response_cluster_dict = response_cluster_dict
@@ -253,7 +259,8 @@ class ReactAnalysisEngine(AbstractConvEngine):
     def _char_similarity_analysis(self, text: str) -> Optional[int]:
         # TBD: draw cutoff threshold from DB
         response_class = None
-        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.65)
+        text_wo_space = text.replace(" ", "")
+        out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=0.6)
         if len(out) == 1:
             idx = self.querys.index(out[0])
             response_class = self.query_cluster_dict['class'][idx]
