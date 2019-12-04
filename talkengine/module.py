@@ -13,7 +13,7 @@ from collections import Counter
 from typing import Optional, Tuple
 
 from .abstract import AbstractConvEngine
-from .data_util import ScenarioDataController, ReactionDataController
+from .data_util import DataController
 from .utils import normalize_text
 
 import eeyore
@@ -95,7 +95,7 @@ class SmalltalkEngine(AbstractConvEngine):
 
 class ScenarioAnalysisEngine(AbstractConvEngine):
     def __init__(self,
-                 data_controller: ScenarioDataController,
+                 data_controller: DataController,
                  k: int):
 
         retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
@@ -204,8 +204,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
 class ReactAnalysisEngine(AbstractConvEngine):
     def __init__(self,
-                 data_controller: ReactionDataController):
-        # To Do
+                 data_controller: DataController):
+        # TODO
         # Connect reaction classification model
         self.data_controller = data_controller
         self.query_cluster_dict = data_controller.query_cluster_dict
@@ -257,7 +257,7 @@ class ReactAnalysisEngine(AbstractConvEngine):
         return response_class
 
     def _char_similarity_analysis(self, text: str) -> Optional[int]:
-        # TBD: draw cutoff threshold from DB
+        # TODO: draw cutoff threshold from DB
         response_class = None
         text_wo_space = text.replace(" ", "")
         out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=0.6)

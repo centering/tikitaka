@@ -3,8 +3,8 @@ from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
 
 import pytest
 
-from talkengine.data_util import DataController
-from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
+from talkengine.data_util import ScenarioDataController, ReactionDataController
+from talkengine.module import ConversationEngine, ReactAnalysisEngine, SmalltalkEngine, ScenarioAnalysisEngine
 
 
 @pytest.fixture
@@ -13,13 +13,18 @@ def engine():
     inferencer = RetrievalDialogInferencer(retrieval_args)
     inferencer.load_model()
 
-    data_controller = DataController(inferencer)
-    scenario_engine = ScenarioAnalysisEngine(data_controller=data_controller,
-                                             k=3)
+    scenario_data_controller = ScenarioDataController(inferencer)
+    scenario_engine = ScenarioAnalysisEngine(
+        data_controller=scenario_data_controller, k=3)
+
+    reaction_data_controller = ReactionDataController()
+    reaction_engine = ReactAnalysisEngine(
+        data_controller=reaction_data_controller)
 
     smalltalk_engine = SmalltalkEngine()
 
     return ConversationEngine(scenario_model=scenario_engine,
+                              reaction_model=reaction_engine,
                               smalltalk_model=smalltalk_engine)
 
 
@@ -54,7 +59,7 @@ def test_empty_query(engine):
 
 
 def test_short_query(engine):
-    query = "."
+    query = "~"
     response = engine.predict(query)
     assert response in [r'좀 더 길게 말씀해주세요~~', r'말씀이 너무 짧으셔서 이해를 못했습니다 ㅜㅜ']
 

@@ -1,10 +1,13 @@
 import pandas as pd
 import numpy as np
 
+import abc
 import importlib
 
 import sys
 import os
+
+from typing import Tuple
 
 from .utils import normalize_text
 
@@ -21,7 +24,17 @@ mod_set = importlib.import_module('model.setting_dao')
 SettingDao = mod_set.SettingDao
 
 
-class ScenarioDataController:
+class DataController(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def init_setup(self) -> Tuple[dict, dict]:
+        pass
+
+    @abc.abstractmethod
+    def update(self) -> Tuple[dict, dict]:
+        pass
+
+
+class ScenarioDataController(DataController):
     def __init__(self, inferencer):
         self.inferencer = inferencer
         self.init_setup()
@@ -101,7 +114,7 @@ class ScenarioDataController:
         return output
 
 
-class ReactionDataController:
+class ReactionDataController(DataController):
     def __init__(self):
         self.init_setup()
 
