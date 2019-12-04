@@ -23,8 +23,8 @@ import sys
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine
-from talkengine.data_util import ScenarioDataController
+from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine, ReactAnalysisEngine
+from talkengine.data_util import ScenarioDataController, ReactionDataController
 
 import eeyore
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
@@ -33,22 +33,19 @@ retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
 inferencer = RetrievalDialogInferencer(retrieval_args)
 inferencer.load_model()
 
-#1) Load TalkEngine
-#with open('../talkengine/resource/ques_embed_dict.pkl', 'rb') as file:
-#    ques_embedded_dict = pickle.load(file)
-
-#with open('../talkengine/resource/res_cluster_dict.pkl', 'rb') as file:
-#    res_cluster_dict = pickle.load(file)
-
-# hyperparameter
 scenario_data_controller = ScenarioDataController(inferencer)
 scenario_engine = ScenarioAnalysisEngine(data_controller=scenario_data_controller,
                                          k=3)
 
+reaction_data_controller = ReactionDataController()
+reaction_engine = ReactAnalysisEngine(data_controller=reaction_data_controller)
+
 smalltalk_engine = SmalltalkEngine()
 
 engine = ConversationEngine(scenario_model=scenario_engine,
+                            reaction_model=reaction_engine,
                             smalltalk_model=smalltalk_engine)
+
 
 app = Flask('tikitaka', static_url_path='', static_folder='../frontend/public', template_folder='../frontend/public')
 

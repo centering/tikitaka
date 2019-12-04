@@ -13,7 +13,7 @@ from collections import Counter
 from typing import Optional, Tuple
 
 from .abstract import AbstractConvEngine
-from .data_util import ScenarioDataController
+from .data_util import ScenarioDataController, ReactionDataController
 from .utils import normalize_text
 
 import eeyore
@@ -25,9 +25,11 @@ from eeyore.models.smalltalk.WEAN import SmalltalkWEANInferencer
 class ConversationEngine(AbstractConvEngine):
     def __init__(self,
                  scenario_model: AbstractConvEngine,
+                 reaction_model: AbstractConvEngine,
                  smalltalk_model: AbstractConvEngine):
 
         self.scenario_model = scenario_model
+        self.reaction_model = reaction_model
         self.smalltalk_model = smalltalk_model
 
     def predict(self, text: str) -> str:
@@ -37,7 +39,10 @@ class ConversationEngine(AbstractConvEngine):
         # 1) scenario analysis
         response = self.scenario_model.predict(text)
 
-        # 2) smalltalk model
+        if not response:
+            response = self.reaction_model.predict(text)
+
+        # 3) smalltalk model
         if not response:
             response = self.smalltalk_model.predict(text)
 
@@ -190,4 +195,66 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         if len(out) == 1:
             idx = self.querys.index(out[0])
             response_class = self.ques_embedding_dict['class'][idx]
+        return response_class
+
+
+class ReactAnalysisEngine(AbstractConvEngine):
+    def __init__(self,
+                 data_controller: ReactionDataController):
+        # To Do
+        # Connect reaction classification model
+        self.data_controller = data_controller
+        self.query_cluster_dict = data_controller.query_cluster_dict
+        self.querys = self.query_cluster_dict['sentences']
+        self.response_cluster_dict = data_controller.response_cluster_dict
+        #self.thres_prob = data_controller.threshold_dict['scenario_similarity_threshold']
+
+    def predict(self, text: str) -> str:
+        response = ""
+        # update
+        query_cluster_dict, response_cluster_dict = self.data_controller.update()
+        if self.query_cluster_dict != query_cluster_dict:
+            self.query_cluster_dict = query_cluster_dict
+            self.querys = self.query_cluster_dict['sentences']
+
+        if self.response_cluster_dict != response_cluster_dict:
+            self.response_cluster_dict = response_cluster_dict
+        #self.thres_prob = self.data_controller.threshold_dict['scenario_similarity_threshold']
+
+        # 1) exact matching
+        res_class = self._exact_matching(text)
+        if res_class:
+            response = self._generate_response(res_class)
+
+        # 2) similarity analysis
+        else:
+            res_class = self._char_similarity_analysis(text)
+            if res_class:
+                response = self._generate_response(res_class)
+        return response
+
+    def _generate_response(self, res_class: int) -> str:
+        res_candidates = self.response_cluster_dict[res_class]
+        return random.choice(res_candidates)
+
+    def _exact_matching(self, query: str) -> Optional[int]:
+        response_class = None
+
+        query_wo_space = query.replace(" ", "")
+
+        preset_sents = self.query_cluster_dict['sentences']
+        preset_sents_wo_space = [s.replace(" ", "") for s in preset_sents]
+
+        if query_wo_space in preset_sents_wo_space:
+            preset_classes = self.query_cluster_dict['class']
+            response_class = preset_classes[preset_sents_wo_space.index(query_wo_space)]
+        return response_class
+
+    def _char_similarity_analysis(self, text: str) -> Optional[int]:
+        # TBD: draw cutoff threshold from DB
+        response_class = None
+        out = difflib.get_close_matches(text, self.querys, n=1, cutoff=0.5)
+        if len(out) == 1:
+            idx = self.querys.index(out[0])
+            response_class = self.query_cluster_dict['class'][idx]
         return response_class
