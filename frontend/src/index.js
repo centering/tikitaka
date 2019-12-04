@@ -8,6 +8,8 @@ import HeaderContainer from './container/Header/HeaderContainer';
 import store from './store';
 import { createBrowserHistory } from 'history';
 
+import 'react-sortable-tree/style.css'; // This only needs to be imported once
+
 const root = document.getElementById('root');
 
 if (!(root instanceof Element)) {

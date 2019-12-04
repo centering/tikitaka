@@ -37,7 +37,6 @@ const IntentCRUDGrid = ({ createEntity, importEntities, exportEntities, deleteEn
                     <Button
                         onClick={() => importEntities()}
                         variant="contained"
-                        color="primary"
                         startIcon={<CloudUploadIcon />}
                     >
                         Import Entities
@@ -46,7 +45,6 @@ const IntentCRUDGrid = ({ createEntity, importEntities, exportEntities, deleteEn
                     <Button
                         onClick={() => exportEntities()}
                         variant="contained"
-                        color="primary"
                         startIcon={<CloudDownloadIcon />}
                     >
                         Export Entitiess
