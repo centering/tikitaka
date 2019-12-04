@@ -197,7 +197,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         text_wo_space = text.replace(" ", "")
         out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=0.6)
         if len(out) == 1:
-            idx = self.querys.index(out[0])
+            idx = self.querys_wo_space.index(out[0])
             response_class = self.ques_embedding_dict['class'][idx]
         return response_class
 
@@ -262,6 +262,6 @@ class ReactAnalysisEngine(AbstractConvEngine):
         text_wo_space = text.replace(" ", "")
         out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=0.6)
         if len(out) == 1:
-            idx = self.querys.index(out[0])
+            idx = self.querys_wo_space.index(out[0])
             response_class = self.query_cluster_dict['class'][idx]
         return response_class
