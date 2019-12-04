@@ -8,7 +8,10 @@ from talkengine.module import ConversationEngine, ReactAnalysisEngine, Smalltalk
 
 
 @pytest.fixture
-def engine():
+def engine(scope="module"):
+    """
+    Creates a ConversationEngine
+    """
     retrieval_args = eeyore.model_config.smalltalk.RetrievalDialog
     inferencer = RetrievalDialogInferencer(retrieval_args)
     inferencer.load_model()
