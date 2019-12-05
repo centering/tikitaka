@@ -11,6 +11,8 @@ scenario_group_ns = api.namespace('scenario_group', 'Scenario Group Service')
 scenario_ns = api.namespace('scenario', 'Scenario Service')
 reaction_group_ns = api.namespace('reaction_group', 'Reaction Group Service')
 reaction_ns = api.namespace('reaction', 'Reaction Service')
+blacklist_group_ns = api.namespace('blacklist_group', 'Blacklist Group Service')
+blacklist_ns = api.namespace('blacklist', 'Blacklist Service')
 setting_ns = api.namespace('setting', 'Setting Service')
 chat_ns = api.namespace('chat', 'chat Service')
 

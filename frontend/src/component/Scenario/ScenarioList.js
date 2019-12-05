@@ -208,7 +208,7 @@ const ShowScenario = ({ scenario, deleteScenario, reviseScenario }) => {
                     <DeleteIcon style={{ cursor: 'pointer' }} onClick={() => deleteScenario(scenario.id)} />
                 </span>
             </h2>
-            <MixMatch set1={query} set2={res} />
+            {query.length && res.length && <MixMatch set1={query} set2={res} />}
 
             <Grid container spacing={3}>
                 <Grid item xs={12}>

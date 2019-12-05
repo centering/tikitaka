@@ -6,7 +6,7 @@ import GroupCreate from '../../component/Group/GroupCreate';
 import AddScenario from '../../component/Scenario/AddScenario';
 import ScenarioList from '../../component/Scenario/ScenarioList';
 
-const ScenarioPage = ({
+const DialogPage = ({
     scenarioGroup,
     setEnvVar,
     envVar,
@@ -47,4 +47,4 @@ const ScenarioPage = ({
     );
 };
 
-export default ScenarioPage;
+export default DialogPage;
