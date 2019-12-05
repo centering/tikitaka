@@ -8,8 +8,6 @@ import { ChatActions } from '../../store/actionCreator';
 import * as ChatCRUD from './ChatCRUD';
 import { setLoading, setNotiboxOpt, setActionStatus } from '../../lib/common';
 
-setActionStatus
-
 class ChatContainer extends Component {
     
     setEnvVar(value) {

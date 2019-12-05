@@ -17,10 +17,13 @@ class DialogContainer extends Component {
     }
 
     render() {
-        const { dialogFlow, dialog, env_var } = this.props;
+        const { dialog_flow, dialog, env_var } = this.props;
+
+        console.log(dialog_flow);
+
         return (
             <div>
-                <DialogPage flow_data={dialogFlow} />
+                <DialogPage flow_data={dialog_flow} />
             </div>
         );
     }

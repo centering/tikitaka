@@ -18,6 +18,8 @@ chat_ns = api.namespace('chat', 'chat Service')
 
 intent_ns = api.namespace('intent', 'Intent Service')
 entity_ns = api.namespace('entity', 'Entity Service')
+
+dialog_flow_ns = api.namespace('dialog_flow', 'Dialog Flow Service')
 dialog_ns = api.namespace('dialog', 'Dialog Service')
 
 blacklist= set()

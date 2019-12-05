@@ -34,12 +34,12 @@ const BlacklistPage = ({
                     <GroupCreate createGroup={createBlacklistGroup} />
                 </Grid>
                 <Grid item xs={12}>
-                    {blacklist && <ScenarioList type="scenario" scenario={blacklist} deleteScenario={deleteBlacklist} reviseScenario={reviseBlacklist} />}
+                    {blacklist && <ScenarioList type="blacklist" scenario={blacklist} deleteScenario={deleteBlacklist} reviseScenario={reviseBlacklist} />}
                 </Grid>
 
                 <Grid item xs={12}>
                     <div style={{ top: 0, position: 'sticky' }}>
-                        <AddScenario type="scenario" createScenario={createBlacklist} envVar={envVar} />
+                        <AddScenario type="blacklist" createScenario={createBlacklist} envVar={envVar} />
                     </div>
                 </Grid>
             </Grid>

@@ -26,37 +26,6 @@ const reducer = handleActions(
     initialState,
 );
 
-export async function DoChat(info) {
-    try {
-        setLoading(true);
-        const res = await doChat(info);
-
-        if (res.code !== 'ok') {
-            setNotiboxOpt({
-                variant: 'error',
-                message: 'can not get response',
-                open: true,
-            });
-        } else {
-            setNotiboxOpt({
-                variant: 'success',
-                message: 'success to get response',
-                open: true,
-            });
-        }
-        setActionStatus('NEED_UPDATE_CHAT');
-        setLoading(false);
-    } catch (e) {
-        setLoading(false);
-
-        setNotiboxOpt({
-            variant: 'error',
-            message: e,
-            open: true,
-        });
-    }
-}
-
 export default applyPenders(reducer, [
     {
         type: SET_CHAT_DATA,

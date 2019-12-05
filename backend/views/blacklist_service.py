@@ -81,6 +81,6 @@ class BlacklistService(Resource):
     @api.expect(blacklist_delete_parser)
     def delete(self):       #D
         args = blacklist_delete_parser.parse_args()
-        BlacklsitDao.delete_blacklist(args['blacklist_id'])
+        BlacklistDao.delete_blacklist(args['blacklist_id'])
 
         return {'code':'ok', 'message':'successed blacklist delete'}
