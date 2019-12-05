@@ -9,7 +9,7 @@ class DialogDao:
         for eachNode in dialog_node_list:
             _insert_item('DIALOG', eachNode)
         
-    def get_dialog_list():
+    def get_dialog_flow():
         condition = {}
         return _get_item('DIALOG', condition)    
 
