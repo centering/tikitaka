@@ -111,6 +111,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
         self.response_cluster_dict = data_controller.response_cluster_dict
         self.thres_prob = data_controller.threshold_dict['scenario_similarity_threshold']
+        self.thres_similar = data_controller.threshold_dict['character_similarity_threshold']
+
 
         self.k = k
 
@@ -130,6 +132,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
             self.response_cluster_dict = response_cluster_dict
 
         self.thres_prob = self.data_controller.threshold_dict['scenario_similarity_threshold']
+        self.thres_similar = self.data_controller.threshold_dict['character_similarity_threshold']
+
 
         # 1) exact matching
         res_class = self._exact_matching(text)
@@ -196,7 +200,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         # TBD: draw cutoff threshold from DB
         response_class = None
         text_wo_space = text.replace(" ", "")
-        out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=0.6)
+        out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=self.thres_similar)
         if len(out) == 1:
             idx = self.querys_wo_space.index(out[0])
             response_class = self.ques_embedding_dict['class'][idx]
@@ -215,7 +219,9 @@ class ReactAnalysisEngine(AbstractConvEngine):
         self.querys = self.query_cluster_dict['sentences']
         self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
         self.response_cluster_dict = data_controller.response_cluster_dict
+
         self.thres_prob = data_controller.threshold_dict['reaction_type_threshold']
+        self.thres_similar = data_controller.threshold_dict['character_similarity_threshold']
 
     def predict(self, text: str) -> str:
         response = ""
@@ -229,6 +235,7 @@ class ReactAnalysisEngine(AbstractConvEngine):
         if self.response_cluster_dict != response_cluster_dict:
             self.response_cluster_dict = response_cluster_dict
         self.thres_prob = self.data_controller.threshold_dict['reaction_type_threshold']
+        self.thres_similar = self.data_controller.threshold_dict['character_similarity_threshold']
 
         # 1) exact matching
         res_class = self._exact_matching(text)
@@ -270,7 +277,7 @@ class ReactAnalysisEngine(AbstractConvEngine):
         # TODO: draw cutoff threshold from DB
         response_class = None
         text_wo_space = text.replace(" ", "")
-        out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=0.6)
+        out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=self.thres_similar)
         if len(out) == 1:
             idx = self.querys_wo_space.index(out[0])
             response_class = self.query_cluster_dict['class'][idx]
