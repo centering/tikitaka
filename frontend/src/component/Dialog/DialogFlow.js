@@ -11,6 +11,8 @@ export default class DialogFlow extends Component {
         { title: 'Fish', children: [{ title: 'fingerline'}] }
       ],
     };
+
+    this.state.treeData = this.props.flow_data;
   }
 
   render() {
