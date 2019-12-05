@@ -1,13 +1,13 @@
 import { createAction, handleActions } from 'redux-actions';
 import { Map } from 'immutable';
 import { applyPenders } from 'redux-pender';
-import { GetBlacklistGroup, GetBlacklist } from '../../lib/api/get';
+import { getBlacklistGroup, getBlacklist } from '../../lib/api/get';
 
 const GET_BLACKLIST_GROUP = 'BLACKLIST/GET_BLACKLIST_GROUP';
 const GET_BLACKLIST = 'BLACKLIST/GET_BLACKLIST';
 const SET_ENV_VAR = 'BLACKLIST/SET_ENV_VAR';
-export const get_blacklist_group = createAction(GET_BLACKLIST_GROUP, GetBlacklistGroup);
-export const get_blacklist = createAction(GET_BLACKLIST, GetBlacklist);
+export const get_blacklist_group = createAction(GET_BLACKLIST_GROUP, getBlacklistGroup);
+export const get_blacklist = createAction(GET_BLACKLIST, getBlacklist);
 export const set_env_var = createAction(SET_ENV_VAR, value => value);
 
 const initialState = Map({

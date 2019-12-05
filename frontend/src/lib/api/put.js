@@ -12,6 +12,18 @@ export function reviseScenario(info) {
         });
 }
 
+export function reviseBlacklist(info) {
+    return axios
+        .put('/api/v1/blacklist/', info)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+
 export function reviseAnswer(info) {
     return axios
         .put('/api/v1/reaction/', info)

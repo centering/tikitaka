@@ -14,8 +14,36 @@ export function getScenarioGroup() {
         });
 }
 
-export function GetScenario(scenario_gruop_id) {
+export function getScenario(scenario_gruop_id) {
     const url = `/api/v1/scenario/?scenario_group_id=${scenario_gruop_id}`;
+
+    return axios
+        .get(url)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+
+export function getBlacklistGroup() {
+    const url = `/api/v1/blacklist_group`;
+
+    return axios
+        .get(url)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+
+export function getBlacklist(blacklist_gruop_id) {
+    const url = `/api/v1/blacklist/?blacklist_group_id=${blacklist_gruop_id}`;
 
     return axios
         .get(url)

@@ -55,14 +55,25 @@ def _get_item(table_name, condition, limit=None, offset=None):
     if not isinstance(condition, dict):
         raise ValueError('condition should be dictionary format')
 
+    column_sql = """SHOW COLUMNS FROM {}""".format(table_name)
+    column_str = []
+    columns = sql_execute(column_sql)
+
+    for eachColumn in columns:
+        if eachColumn['Type'] == 'datetime':
+            column_str.append("DATE_FORMAT({}, '%Y-%m-%d') AS {}".format(eachColumn['Field'], eachColumn['Field']))
+        else:
+            column_str.append(eachColumn['Field'])
+    column_str = ', '.join(column_str)
+    
     sql =  """
     SELECT 
-        *
+        {}
     FROM
         {}
     WHERE
         1=1
-    """.format(table_name)
+    """.format(column_str, table_name)
 
     for key, value in condition.items():
         if isinstance(value, str):

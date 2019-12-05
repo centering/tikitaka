@@ -61,7 +61,8 @@ const IntentPage = ({
                 title="Intent List"
                 columns={[
                     {title: 'Intent', field: 'name'},
-                    {title: 'examples', field: 'utterance_count'},
+                    {title: 'Examples', field: 'utterance_count'},
+                    {title: 'Modified', field: 'modify_dt'},
                 ]}
 
                 data = {intent_list

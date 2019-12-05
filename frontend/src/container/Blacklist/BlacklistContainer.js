@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import BlacklistPage from '../../pages/Scenario/BlacklistPage';
+import BlacklistPage from '../../pages/blacklist/BlacklistPage';
 import { BlacklistActions } from '../../store/actionCreator';
 
 import * as BlacklistCRUD from './BlacklistCRUD';

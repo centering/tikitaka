@@ -47,4 +47,4 @@ const BlacklistPage = ({
     );
 };
 
-export default ScenarioPage;
+export default BlacklistPage;

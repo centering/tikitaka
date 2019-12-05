@@ -1,17 +1,17 @@
-import { ScenarioActions } from '../../store/actionCreator';
+import { BlacklistActions } from '../../store/actionCreator';
 import { setLoading, setNotiboxOpt, setActionStatus } from '../../lib/common';
-import { createScenarioGroup, createScenario } from '../../lib/api/post';
-import { reviseScenario } from '../../lib/api/put';
-import { deleteScenario, deleteScenarioGroup } from '../../lib/api/delete';
+import { createBlacklistGroup, createBlacklist } from '../../lib/api/post';
+import { reviseBlacklist } from '../../lib/api/put';
+import { deleteBlacklist, deleteBlacklistGroup } from '../../lib/api/delete';
 
-export async function GetScenarioGroup() {
+export async function GetBlacklistGroup() {
     try {
         setLoading(true);
-        const res = await ScenarioActions.get_scenario_group();
+        const res = await BlacklistActions.get_blacklist_group();
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오 그룹을 가져오지 못했습니다.',
+                message: 'can not get blacklist group',
                 open: true,
             });
         }
@@ -28,15 +28,15 @@ export async function GetScenarioGroup() {
     }
 }
 
-export async function GetScenario(scenario_group_id) {
+export async function GetBlacklist(blacklist_group_id) {
     try {
         setLoading(true);
-        const res = await ScenarioActions.get_scenario(scenario_group_id);
+        const res = await BlacklistActions.get_blacklist(blacklist_group_id);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오를 가져오지 못했습니다.',
+                message: 'can not get blacklist',
                 open: true,
             });
         }
@@ -53,25 +53,25 @@ export async function GetScenario(scenario_group_id) {
     }
 }
 
-export async function CreateScenarioGroup(info) {
+export async function CreateBlacklistGroup(info) {
     try {
         setLoading(true);
-        const res = await createScenarioGroup(info);
+        const res = await createBlacklistGroup(info);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오 그룹을 생성하지 못했습니다.',
+                message: 'can not create blacklist group',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오 그룹을 생성하였습니다.',
+                message: 'success to create blacklist group',
                 open: true,
             });
         }
-        setActionStatus('NEED_UPDATE_SCENARIO_GROUP');
+        setActionStatus('NEED_UPDATE_BLACKLIST_GROUP');
         setLoading(false);
     } catch (e) {
         setLoading(false);
@@ -84,25 +84,25 @@ export async function CreateScenarioGroup(info) {
     }
 }
 
-export async function CreateScenario(id) {
+export async function CreateBlacklist(id) {
     try {
         setLoading(true);
-        const res = await createScenario(id);
+        const res = await createBlacklist(id);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오를 생성하지 못했습니다.',
+                message: 'can not create blacklist',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오를 생성하였습니다.',
+                message: 'success to create blacklist',
                 open: true,
             });
         }
-        setActionStatus('NEED_UPDATE_SCENARIO');
+        setActionStatus('NEED_UPDATE_BLACKLIST');
 
         setLoading(false);
     } catch (e) {
@@ -116,25 +116,25 @@ export async function CreateScenario(id) {
     }
 }
 
-export async function ReviseScenario(info) {
+export async function ReviseBlacklist(info) {
     try {
         setLoading(true);
-        const res = await reviseScenario(info);
+        const res = await reviseBlacklist(info);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오를 수정하지 못했습니다.',
+                message: 'can not revise blacklist',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오를 수정 하였습니다.',
+                message: 'success to revise blacklist',
                 open: true,
             });
         }
-        setActionStatus('NEED_UPDATE_SCENARIO');
+        setActionStatus('NEED_UPDATE_BLACKLIST');
         setLoading(false);
     } catch (e) {
         setLoading(false);
@@ -147,25 +147,25 @@ export async function ReviseScenario(info) {
     }
 }
 
-export async function DeleteScenario(id) {
+export async function DeleteBlacklist(id) {
     try {
         setLoading(true);
-        const res = await deleteScenario(id);
+        const res = await deleteBlacklist(id);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오를 삭제하지 못했습니다.',
+                message: 'can not delete blacklist',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오를 삭제 하였습니다.',
+                message: 'success to delete blacklist',
                 open: true,
             });
         }
-        setActionStatus('NEED_UPDATE_SCENARIO');
+        setActionStatus('NEED_UPDATE_BLACKLIST');
         setLoading(false);
     } catch (e) {
         setLoading(false);
@@ -178,26 +178,26 @@ export async function DeleteScenario(id) {
     }
 }
 
-export async function DeleteScenarioGroup(id) {
+export async function DeleteBlacklistGroup(id) {
     try {
         setLoading(true);
-        const res = await deleteScenarioGroup(id);
+        const res = await deleteBlacklistGroup(id);
 
         if (res.code !== 'ok') {
             setNotiboxOpt({
                 variant: 'error',
-                message: '시나리오 그룹을 삭제하지 못했습니다.',
+                message: 'can not delete blacklist group',
                 open: true,
             });
         } else {
             setNotiboxOpt({
                 variant: 'success',
-                message: '시나리오 그룹을 삭제 하였습니다.',
+                message: 'success to delete blacklist group',
                 open: true,
             });
         }
 
-        setActionStatus('NEED_UPDATE_SCENARIO_GROUP');
+        setActionStatus('NEED_UPDATE_BLACKLIST_GROUP');
         setLoading(false);
     } catch (e) {
         setLoading(false);
