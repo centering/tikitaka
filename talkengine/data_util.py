@@ -66,9 +66,11 @@ class ScenarioDataController(DataController):
         remain_idx = [i for i in range(len(pre_query_set)) if pre_query_set[i] not in delete_query]
 
         if len(delete_query) > 0:
-            self.query_embedding_dict['sentences'] = [self.query_embedding_dict['sentences'][i] for i in remain_idx]
-            self.query_embedding_dict['vectors'] = [self.query_embedding_dict['sentences'][i] for i in remain_idx]
-            self.query_embedding_dict['class'] = [self.query_embedding_dict['sentences'][i] for i in remain_idx]
+            new_query_embedding_dict = {}
+            new_query_embedding_dict['sentences'] = [self.query_embedding_dict['sentences'][i] for i in remain_idx]
+            new_query_embedding_dict['vectors'] = [self.query_embedding_dict['vectors'][i] for i in remain_idx]
+            new_query_embedding_dict['class'] = [self.query_embedding_dict['class'][i] for i in remain_idx]
+            self.query_embedding_dict = new_query_embedding_dict
 
         if len(new_query) > 0:
             new_query_class = [q[0] for q in new_query]
@@ -78,10 +80,10 @@ class ScenarioDataController(DataController):
             query_embed_dict = {}
             for k in self.query_embedding_dict.keys():
                 if self.query_embedding_dict[k].__class__ == np.ndarray:
-                    query_embed_dict[k] = [d[k] for d in
-                                           np.concatenate([self.query_embedding_dict, new_query_embedding_dict])]
+                    query_embed_dict[k] = [d for d in
+                                           np.concatenate([self.query_embedding_dict[k], new_query_embedding_dict[k]])]
                 else:
-                    query_embed_dict[k] = [d[k] for d in [self.query_embedding_dict, new_query_embedding_dict]]
+                    query_embed_dict[k] = [d for d in self.query_embedding_dict[k] + new_query_embedding_dict[k]]
             self.query_embedding_dict = query_embed_dict
 
         # update response
@@ -207,3 +209,4 @@ def construct_output(dataset: pd.DataFrame):
     res_cluster = construct_cluster_dict(dataset['sentence2'].tolist(), dataset['class'].tolist())
     ques_embed = construct_embed_dict(dataset['sentence1'].tolist(), dataset['class'].tolist())
     return res_cluster, ques_embed
+

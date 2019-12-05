@@ -180,7 +180,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         return random.choice(res_candidates)
 
     def _faiss_indexing(self) -> Tuple[Optional[faiss.IndexFlatIP], list]:
-        query_vectors = self.ques_embedding_dict['vectors']
+        query_vectors = np.array(self.ques_embedding_dict['vectors'])
         class_list = self.ques_embedding_dict['class']
 
         if len(query_vectors) == 0:
