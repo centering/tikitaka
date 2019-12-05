@@ -15,7 +15,5 @@ For supporting these functions, Tikitaka provides easy data register & modifying
 ![](img/tikitaka_erd.png )
 ---
 
-## Berg report
-##### 1. 대그룹 순서사 섞이는 경우 발생
-##### 2. 특정 query (ex, 최애 컬러가 뭐야?) 같은 경우 다른 소그룹의 query에 등장 (DB, API에는 문제 없음)
-##### 2번의 경우 대그룹 태그를 클릭하면 발생하는 것으로 보임. 자동 답변 갔다오면 괜찮아짐.
+## Bug report
+#### 버그 없지롱 (아직까지는..)
