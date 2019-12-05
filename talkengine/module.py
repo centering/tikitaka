@@ -68,6 +68,7 @@ class SmalltalkEngine(AbstractConvEngine):
         self.slang_detector.load_model()
 
     def predict(self, text: str) -> str:
+        tag = '<Sentence Generation>'
         if not text:
             return self._generate_cant_response(is_short=True)
 
@@ -80,9 +81,8 @@ class SmalltalkEngine(AbstractConvEngine):
 
         # 3) Post processing
         if not response:
-            response = self._generate_cant_response(is_short=(len(text) <= 5))
-
-        return response
+            return self._generate_cant_response(is_short=(len(text) <= 5))
+        return response + "\n" + tag
 
     def _generate_slang_response(self, prob: float) -> str:
         res = '고객님, {}%의 확률로 욕이 탐지되었습니다. '.format(min(prob * 100, 99.))
@@ -120,6 +120,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
     def predict(self, text: str) -> str:
         response = ""
+        tag = ""
+
         # update
         ques_embedding_dict, response_cluster_dict = self.data_controller.update()
         if self.ques_embedding_dict != ques_embedding_dict:
@@ -139,6 +141,7 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         res_class = self._exact_matching(text)
         if res_class:
             response = self._generate_response(res_class)
+            tag = "<Scenario>"
 
         # 2) similarity analysis
         else:
@@ -146,6 +149,8 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
             res_class = self._char_similarity_analysis(text)
             if res_class:
                 response = self._generate_response(res_class)
+                tag = "<Scenario>"
+
             # b) semantic similarity
             else:
                 query_vec = self.inferencer.infer(text)
@@ -165,6 +170,9 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
 
                 if pred_counts[res_class] >= math.ceil(self.k / 2) and max_prob >= self.thres_prob:
                     response = self._generate_response(res_class)
+                    tag = "<Scenario-Semantic | Score: {}>".format(str(round(max_prob, 2)))
+        if tag:
+            response = response + "\n" + tag
         return response
 
     def _generate_response(self, res_class: int) -> str:
@@ -197,7 +205,6 @@ class ScenarioAnalysisEngine(AbstractConvEngine):
         return response_class
 
     def _char_similarity_analysis(self, text: str) -> Optional[int]:
-        # TBD: draw cutoff threshold from DB
         response_class = None
         text_wo_space = text.replace(" ", "")
         out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=self.thres_similar)
@@ -225,6 +232,8 @@ class ReactAnalysisEngine(AbstractConvEngine):
 
     def predict(self, text: str) -> str:
         response = ""
+        tag = ""
+
         # update
         query_cluster_dict, response_cluster_dict = self.data_controller.update()
         if self.query_cluster_dict != query_cluster_dict:
@@ -241,12 +250,14 @@ class ReactAnalysisEngine(AbstractConvEngine):
         res_class = self._exact_matching(text)
         if res_class:
             response = self._generate_response(res_class)
+            tag = "<Reaction>"
 
         # 2) similarity analysis
         if not response:
             res_class = self._char_similarity_analysis(text)
             if res_class:
                 response = self._generate_response(res_class)
+                tag = "<Reaction>"
 
         # 3) Classification
         if not response:
@@ -254,6 +265,11 @@ class ReactAnalysisEngine(AbstractConvEngine):
             if prob >= self.thres_prob:
                 res_class = pred[0]
                 response = self._generate_response(res_class)
+                tag = "<Reaction-Classification | Score: {}>".format(round(prob[0], 2))
+
+        if tag:
+            response = response + "\n" + tag
+
         return response
 
     def _generate_response(self, res_class: int) -> str:
@@ -274,7 +290,6 @@ class ReactAnalysisEngine(AbstractConvEngine):
         return response_class
 
     def _char_similarity_analysis(self, text: str) -> Optional[int]:
-        # TODO: draw cutoff threshold from DB
         response_class = None
         text_wo_space = text.replace(" ", "")
         out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=self.thres_similar)
