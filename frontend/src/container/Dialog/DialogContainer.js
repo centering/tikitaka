@@ -2,58 +2,33 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import ScenarioPage from '../../pages/Scenario/ScenarioPage';
-import { ScenarioActions } from '../../store/actionCreator';
+import DialogPage from '../../pages/Dialog/DialogPage';
+import { DialogActions } from '../../store/actionCreator';
 
-import * as ScenarioCRUD from './DialogCRUD';
+import * as DialogCRUD from './DialogCRUD';
 
-class ScenarioContainer extends Component {
+class DialogContainer extends Component {
     componentDidMount() {
-        ScenarioCRUD.GetScenarioGroup();
-    }
-
-    componentDidUpdate(prevProps) {
-        const { env_var, action_status } = this.props;
-        if (
-            (prevProps.env_var.get('selected_scenario_group_id') !== env_var.get('selected_scenario_group_id') ||
-                (prevProps.action_status === '' && action_status === 'NEED_UPDATE_SCENARIO')) &&
-            env_var.get('selected_scenario_group_id') !== undefined
-        ) {
-            ScenarioCRUD.GetScenario(env_var.get('selected_scenario_group_id'));
-        }
-
-        if (prevProps.action_status === '' && action_status === 'NEED_UPDATE_SCENARIO_GROUP') {
-            ScenarioCRUD.GetScenarioGroup();
-        }
+        DialogCRUD.getDialogFlow();
     }
 
     setEnvVar(value) {
-        ScenarioActions.set_env_var(value);
+        DialogActions.set_env_var(value);
     }
 
     render() {
-        const { scenario, scenario_group, env_var } = this.props;
+        const { dialogFlow, dialog, env_var } = this.props;
         return (
             <div>
-                <ScenarioPage
-                    scenarioGroup={scenario_group}
-                    scenario={scenario}
-                    envVar={env_var}
-                    setEnvVar={this.setEnvVar}
-                    createScenarioGroup={ScenarioCRUD.CreateScenarioGroup}
-                    reviseScenario={ScenarioCRUD.ReviseScenario}
-                    deleteScenario={ScenarioCRUD.DeleteScenario}
-                    deleteScenarioGroup={ScenarioCRUD.DeleteScenarioGroup}
-                    createScenario={ScenarioCRUD.CreateScenario}
-                />
+                <DialogPage flow_data={dialogFlow} />
             </div>
         );
     }
 }
 
-export default connect(({ common, scenario }) => ({
-    scenario_group: scenario.get('scenario_group'),
-    scenario: scenario.get('scenario'),
-    env_var: scenario.get('env_var'),
+export default connect(({ common, dialog }) => ({
+    dialog_flow: dialog.get('dialog_flow'),
+    dialog: dialog.get('dialog'),
+    env_var: dialog.get('env_var'),
     action_status: common.get('action_status'),
-}))(ScenarioContainer);
+}))(DialogContainer);
