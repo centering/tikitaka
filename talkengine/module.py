@@ -87,11 +87,11 @@ class SmalltalkEngine(AbstractConvEngine):
     def _generate_slang_response(self, prob: float) -> str:
         res = '고객님, {}%의 확률로 욕이 탐지되었습니다. '.format(min(prob * 100, 99.))
         res_candidates = [res + s for s in self.slang_responses]
-        return random.choice(res_candidates)
+        return random.choice(res_candidates) + f"\n<Slang | Prob: {prob}>"
 
     def _generate_cant_response(self, is_short: bool) -> str:
         responses = self.cant_responses_short if is_short else self.cant_responses
-        return random.choice(responses)
+        return random.choice(responses) + f"\n<Can't response | is_short: {is_short}>"
 
 
 class ScenarioAnalysisEngine(AbstractConvEngine):
