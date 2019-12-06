@@ -71,7 +71,7 @@ const EntityPage = ({
                 columns={[
                     {title: 'Entity', field: 'name'},
                     {title: 'Value', field: 'value'},
-                    {title: 'Synonyms', field: 'synonym'},
+                    // {title: 'Synonyms', field: 'synonym'},
                     {title: 'Modified', field: 'modify_dt'},
                 ]}
                 data = {entity_list}

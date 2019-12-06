@@ -74,8 +74,7 @@ export function reviseEntity(info) {
 }
 
 export function reviseDialogFlow(info) {
-    console.log(getFlatDataFromTree(info, node => node.id));
-
+    
     return axios
         .put('/api/v1/dialog_flow/', info)
         .then(function(response) {

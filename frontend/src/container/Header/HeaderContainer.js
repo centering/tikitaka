@@ -6,14 +6,18 @@ import HeaderPage from '../../pages/Header/HeaderPage';
 
 import { setNotiboxOpt } from '../../lib/common';
 
+import ErrorBoundary from '../Common/ErrorBoundary';
+
 class HeaderContainer extends Component {
     render() {
         const { loading, noti_opt } = this.props;
 
         return (
-            <div>
-                <HeaderPage SetNotiboxOpt={setNotiboxOpt} Loading={loading} NotiOpt={noti_opt} />
-            </div>
+            <ErrorBoundary>
+                <div>
+                    <HeaderPage SetNotiboxOpt={setNotiboxOpt} Loading={loading} NotiOpt={noti_opt} />
+                </div>
+            </ErrorBoundary>
         );
     }
 }

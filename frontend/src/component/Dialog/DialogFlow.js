@@ -3,7 +3,6 @@ import SortableTree from 'react-sortable-tree';
 import getTreeFromFlatData from 'react-sortable-tree';
 
 const DialogFlow = ({ flow_data, onChange }) => {
-  console.log(flow_data);
 
   return (
       <>
