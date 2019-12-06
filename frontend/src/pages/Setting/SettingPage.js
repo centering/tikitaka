@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const SettingPage = ({ setting, reviseSetting }) => {
     function onSave() {
@@ -34,6 +35,7 @@ const ShowSetting = ({ setting }) => {
     return (
         <div style={{ width: '400px' }}>
             <Typography gutterBottom>{setting.name}</Typography>
+            <InputLabel>{setting.description}</InputLabel>
             <Slider onChange={handleChange} defaultValue={setting.value} min={0} max={1} step={0.01} marks valueLabelDisplay="on" />
         </div>
     );
