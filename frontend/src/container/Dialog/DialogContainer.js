@@ -12,6 +12,14 @@ class DialogContainer extends Component {
         DialogCRUD.getDialogFlow();
     }
 
+    componentDidUpdate(prevProps) {
+        const { env_var, action_status } = this.props;
+        
+        if (prevProps.action_status === '' && action_status === 'NEED_UPDATE_DIALOG_FLOW') {
+            DialogCRUD.getDialogFlow();
+        }
+    }
+
     setEnvVar(value) {
         DialogActions.set_env_var(value);
     }
@@ -19,11 +27,9 @@ class DialogContainer extends Component {
     render() {
         const { dialog_flow, dialog, env_var } = this.props;
 
-        console.log(dialog_flow);
-
         return (
             <div>
-                <DialogPage flow_data={dialog_flow} />
+                <DialogPage flow_data={dialog_flow} onChange={DialogCRUD.updateDialogFlow}/>
             </div>
         );
     }

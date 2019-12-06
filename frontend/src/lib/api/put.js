@@ -1,4 +1,5 @@
 import axios from 'axios';
+import getFlatDataFromTree from 'react-sortable-tree';
 
 export function reviseScenario(info) {
     return axios
@@ -71,3 +72,18 @@ export function reviseEntity(info) {
             return 'ng';
         });
 }
+
+export function reviseDialogFlow(info) {
+    console.log(getFlatDataFromTree(info, node => node.id));
+
+    return axios
+        .put('/api/v1/dialog_flow/', info)
+        .then(function(response) {
+            if (response.status === 200) return response.data;
+            return {};
+        })
+        .catch(function() {
+            return 'ng';
+        });
+}
+

@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
 import SortableTree from 'react-sortable-tree';
+import getTreeFromFlatData from 'react-sortable-tree';
 
-export default class DialogFlow extends Component {
-  constructor(props) {
-    super(props);
+const DialogFlow = ({ flow_data, onChange }) => {
+  console.log(flow_data);
 
-    this.state = {
-      treeData: [
-        { title: 'Chicken', children: [{ title: 'Egg' }] },
-        { title: 'Fish', children: [{ title: 'fingerline'}] }
-      ],
-    };
+  return (
+      <>
+        <div style={{ height: 800 }}>
+          <SortableTree
+            treeData={flow_data}
+            onChange={treeData => onChange({ treeData })}
+          />
+        </div>
+      </>
+  );
+};
 
-    this.state.treeData = this.props.flow_data;
-  }
+export default DialogFlow;
 
-  render() {
-    return (
-      <div style={{ height: 400 }}>
-        <SortableTree
-          treeData={this.state.treeData}
-          onChange={treeData => this.setState({ treeData })}
-        />
-      </div>
-    );
-  }
-}
+
