@@ -3,8 +3,8 @@ from flask import Flask, render_template, jsonify, make_response, request
 from flask_jwt_extended import jwt_required
 
 from views.api import api, chat_ns
-from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine, ReactAnalysisEngine
-from talkengine.data_util import ScenarioDataController, ReactionDataController
+from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine, ReactAnalysisEngine, SlangDetectionEngine
+from talkengine.data_util import ScenarioDataController, ReactionDataController, SlangDataController
 
 import pickle
 import json
@@ -25,10 +25,14 @@ scenario_engine = ScenarioAnalysisEngine(data_controller=scenario_data_controlle
 reaction_data_controller = ReactionDataController()
 reaction_engine = ReactAnalysisEngine(data_controller=reaction_data_controller)
 
+slang_data_controller = SlangDataController()
+slang_engine = SlangDetectionEngine(data_controller=slang_data_controller)
+
 smalltalk_engine = SmalltalkEngine()
 
 engine = ConversationEngine(scenario_model=scenario_engine,
                             reaction_model=reaction_engine,
+                            slang_model=slang_engine,
                             smalltalk_model=smalltalk_engine)
 
 chat_proto = chat_ns.model("chat_proto", {

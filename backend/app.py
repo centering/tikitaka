@@ -25,8 +25,8 @@ import sys
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine, ReactAnalysisEngine
-from talkengine.data_util import ScenarioDataController, ReactionDataController
+from talkengine.module import ConversationEngine, SmalltalkEngine, ScenarioAnalysisEngine, ReactAnalysisEngine, SlangDetectionEngine
+from talkengine.data_util import ScenarioDataController, ReactionDataController, SlangDataController
 
 import eeyore
 from eeyore.models.smalltalk.RetrievalDialog import RetrievalDialogInferencer
@@ -42,10 +42,14 @@ scenario_engine = ScenarioAnalysisEngine(data_controller=scenario_data_controlle
 reaction_data_controller = ReactionDataController()
 reaction_engine = ReactAnalysisEngine(data_controller=reaction_data_controller)
 
+slang_data_controller = SlangDataController()
+slang_engine = SlangDetectionEngine(data_controller=slang_data_controller)
+
 smalltalk_engine = SmalltalkEngine()
 
 engine = ConversationEngine(scenario_model=scenario_engine,
                             reaction_model=reaction_engine,
+                            slang_model=slang_engine,
                             smalltalk_model=smalltalk_engine)
 
 

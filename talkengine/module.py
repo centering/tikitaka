@@ -27,19 +27,26 @@ class ConversationEngine(AbstractConvEngine):
     def __init__(self,
                  scenario_model: AbstractConvEngine,
                  reaction_model: AbstractConvEngine,
+                 slang_model: AbstractConvEngine,
                  smalltalk_model: AbstractConvEngine):
 
         self.scenario_model = scenario_model
         self.reaction_model = reaction_model
+        self.slang_model = slang_model
         self.smalltalk_model = smalltalk_model
 
     def predict(self, text: str) -> str:
         # 0) text normalize
         text = normalize_text(text)
 
-        # 1) scenario analysis
-        response = self.scenario_model.predict(text)
+        # 1) slang filter
+        response = self.slang_model.predict(text)
 
+        # 2) scenario
+        if not response:
+            response = self.scenario_model.predict(text)
+
+        # 3) reaction
         if not response:
             response = self.reaction_model.predict(text)
 
@@ -297,3 +304,74 @@ class ReactAnalysisEngine(AbstractConvEngine):
             idx = self.querys_wo_space.index(out[0])
             response_class = self.query_cluster_dict['class'][idx]
         return response_class
+
+
+class SlangDetectionEngine(AbstractConvEngine):
+    def __init__(self,
+                 data_controller: DataController):
+        self.data_controller = data_controller
+        self.query_cluster_dict = data_controller.query_cluster_dict
+        self.querys = self.query_cluster_dict['sentences']
+        self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
+        self.response_cluster_dict = data_controller.response_cluster_dict
+
+        self.thres_similar = data_controller.threshold_dict['character_similarity_threshold']
+
+    def predict(self, text: str) -> str:
+        response = ""
+        tag = ""
+
+        # update
+        query_cluster_dict, response_cluster_dict = self.data_controller.update()
+        if self.query_cluster_dict != query_cluster_dict:
+            self.query_cluster_dict = query_cluster_dict
+            self.querys = self.query_cluster_dict['sentences']
+            self.querys_wo_space = [s.replace(" ", "") for s in self.querys]
+
+        if self.response_cluster_dict != response_cluster_dict:
+            self.response_cluster_dict = response_cluster_dict
+        self.thres_similar = self.data_controller.threshold_dict['character_similarity_threshold']
+
+        # 1) exact matching
+        res_class = self._exact_matching(text)
+        if res_class:
+            response = self._generate_response(res_class)
+            tag = "<Slang>"
+
+        # 2) similarity analysis
+        if not response:
+            res_class = self._char_similarity_analysis(text)
+            if res_class:
+                response = self._generate_response(res_class)
+                tag = "<Slang>"
+
+        if tag:
+            response = response + '\n' + tag
+        return response
+
+    def _generate_response(self, res_class: int) -> str:
+        res_candidates = self.response_cluster_dict[res_class]
+        return random.choice(res_candidates)
+
+    def _exact_matching(self, query: str) -> Optional[int]:
+        response_class = None
+
+        query_wo_space = query.replace(" ", "")
+
+        preset_sents = self.query_cluster_dict['sentences']
+        preset_sents_wo_space = [s.replace(" ", "") for s in preset_sents]
+
+        if query_wo_space in preset_sents_wo_space:
+            preset_classes = self.query_cluster_dict['class']
+            response_class = preset_classes[preset_sents_wo_space.index(query_wo_space)]
+        return response_class
+
+    def _char_similarity_analysis(self, text: str) -> Optional[int]:
+        response_class = None
+        text_wo_space = text.replace(" ", "")
+        out = difflib.get_close_matches(text_wo_space, self.querys_wo_space, n=1, cutoff=self.thres_similar)
+        if len(out) == 1:
+            idx = self.querys_wo_space.index(out[0])
+            response_class = self.query_cluster_dict['class'][idx]
+        return response_class
+
