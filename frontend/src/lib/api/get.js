@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getTreeFromFlatData from 'react-sortable-tree';
+
 
 export function getScenarioGroup() {
     const url = `/api/v1/scenario_group`;
@@ -77,7 +77,7 @@ export function GetAnswer(reaction_group_id) {
     return axios
         .get(url)
         .then(function(response) {
-            if (response.status === 200) return getTreeFromFlatData(response.data);
+            if (response.status === 200) return response.data;
             return {};
         })
         .catch(function() {
