@@ -274,11 +274,11 @@ const ShowBlacklist = ({ blacklist, deleteBlacklist, reviseBlacklist }) => {
 
     function saveBlacklist() {
         const data = {
-            scenario_id: blacklist.id,
-            scenario_query: query.map(qry => {
+            blacklist_id: blacklist.id,
+            blacklist_query: query.map(qry => {
                 return qry.label;
             }),
-            scenario_response: res.map(re => {
+            blacklist_response: res.map(re => {
                 return re.label;
             }),
         };
